@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Projects — KHUSHI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+    html, body {
+    overflow: hidden !important;
+    height: 100%;
+    width: 100%;
+}
+
+    .navbar {
+  position: fixed; top: 0; left: 0; width: 100%;
+  padding: 18px 40px; display:flex; justify-content:center; gap:40px;
+  z-index: 999; backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.25); border-bottom: 1px solid rgba(57,255,20,0.18);
+}
+.nav-item { font-size: clamp(14px, 1.2vw, 18px); color: #39ff14; letter-spacing:1px; text-decoration:none; position:relative; text-shadow:0 0 8px #39ff14; }
+.nav-item::after{ content: attr(data-text); position:absolute; left:2px; top:0; color:#39ff14; opacity:.4; z-index:-1; text-shadow:-2px 0 #ff00c8; clip-path: polygon(0 0,100% 0,100% 40%,0 40%); animation: glitch 1.3s infinite linear alternate-reverse; }
+  :root{
+    --bg:#000;
+    --glass: rgba(255,255,255,0.03);
+    --card-w: 360px;
+    --card-h: 140px;
+    --radius: 18px;
+
+    /* neon color variables (used per-card) */
+    --neon-1: #39ff14;  /* green */
+    --neon-2: #00eaff;  /* cyan */
+    --neon-3: #ff3bd1;  /* pink */
+    --neon-4: #ff4b4b;  /* red */
+    --neon-5: #ffe100;  /* yellow */
+    --neon-6: #a200ff;  /* purple */
+
+    /* common */
+    --glass-border-opacity: 0.06;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--bg);font-family:"Share Tech Mono", monospace;color:#fff; -webkit-font-smoothing:antialiased;}
+  a{color:inherit}
+
+  /* Optional background video or gif - replace source with your file */
+  .bg{
+    position:fixed; inset:0; width:100%; height:100%;
+    object-fit:cover; z-index:0; filter:brightness(.45) contrast(1.05);
+  }
+  .overlay{
+    position:fixed; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.45)); z-index:1;
+  }
+
+  /* page container */
+  .page {
+    position:relative;
+    min-height:100vh;
+    z-index:2;
+    padding:90px 36px 120px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:36px;
+  }
+
+  h1{
+    font-size:64px;
+    letter-spacing:6px;
+    margin:0;
+    font-weight:700;
+    color:#fff;
+    z-index:3;
+  }
+  .sub{
+    color:rgba(255,255,255,0.66);
+    margin-top:6px;
+    margin-bottom:18px;
+    font-size:15px;
+    text-align:center;
+  }
+
+  /* grid */
+  .grid{
+    width:100%;
+    max-width:1240px;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:28px;
+    align-items:start;
+    z-index:3;
+  }
+
+  /* card base */
+  .card {
+    position:relative;
+    width:100%;
+    min-height:var(--card-h);
+    height:auto;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    border-radius:var(--radius);
+    border: 3px solid rgba(255,255,255,var(--glass-border-opacity));
+    overflow:visible;
+    padding:18px 22px;
+    transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s ease, background .22s ease;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.01);
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    gap:8px;
+    backface-visibility: hidden;
+  }
+
+  /* neon left bar */
+  .card::before{
+    content:'';
+    position:absolute;
+    left:16px;
+    top:18px;
+    bottom:18px;
+    width:14px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    opacity:.08;
+    pointer-events:none;
+  }
+
+  /* title row */
+  .title {
+    font-size:22px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin:0;
+    z-index:5;
+  }
+
+  .short {
+    color:rgba(255,255,255,0.64);
+    font-size:14px;
+    margin-top:6px;
+    line-height:1.4;
+    max-width:90%;
+  }
+
+  /* hidden detail area (revealed when active) */
+  .detail {
+    margin-top:12px;
+    padding:18px;
+    font-size:14px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.18));
+    border-radius:12px;
+    color:rgba(255,255,255,0.95);
+    transform-origin:top center;
+    max-height:0;
+    opacity:0;
+    overflow:hidden;
+    transition: max-height .46s cubic-bezier(.2,.85,.2,1), opacity .28s ease, transform .28s ease;
+  }
+
+  /* active state: expand */
+  .card.active{
+    transform:translateY(-6px);
+    box-shadow: 0 18px 60px rgba(0,0,0,0.75);
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.04));
+  }
+
+  .card.active .detail{
+    opacity:1;
+    max-height:420px; /* enough for content */
+    transform:translateY(0);
+  }
+
+  /* Neon outlines: thick border + heavy glow (Option 2) */
+  .c1{ border-color: var(--neon-1); box-shadow: 0 6px 40px rgba(0,0,0,0.6), 0 0 30px var(--neon-1), 0 0 60px rgba(57,255,20,0.12); }
+  .c2{ border-color: var(--neon-2); box-shadow: 0 6px 40px rgba(0,0,0,0.6), 0 0 30px var(--neon-2), 0 0 60px rgba(0,234,255,0.12); }
+  .c3{ border-color: var(--neon-3); box-shadow: 0 6px 40px rgba(0,0,0,0.6), 0 0 30px var(--neon-3), 0 0 60px rgba(255,59,209,0.12); }
+  .c4{ border-color: var(--neon-4); box-shadow: 0 6px 40px rgba(0,0,0,0.6), 0 0 30px var(--neon-4), 0 0 60px rgba(255,75,75,0.12); }
+  .c5{ border-color: var(--neon-5); box-shadow: 0 6px 40px rgba(0,0,0,0.6), 0 0 30px var(--neon-5), 0 0 60px rgba(255,225,0,0.12); }
+  .c6{ border-color: var(--neon-6); box-shadow: 0 6px 40px rgba(0,0,0,0.6), 0 0 30px var(--neon-6), 0 0 60px rgba(162,0,255,0.12); }
+
+  /* left neon bar color */
+  .c1::before{ background: linear-gradient(180deg,var(--neon-1), rgba(57,255,20,0.2)); box-shadow:0 0 20px var(--neon-1); }
+  .c2::before{ background: linear-gradient(180deg,var(--neon-2), rgba(0,234,255,0.2)); box-shadow:0 0 20px var(--neon-2); }
+  .c3::before{ background: linear-gradient(180deg,var(--neon-3), rgba(255,59,209,0.2)); box-shadow:0 0 20px var(--neon-3); }
+  .c4::before{ background: linear-gradient(180deg,var(--neon-4), rgba(255,75,75,0.2)); box-shadow:0 0 20px var(--neon-4); }
+  .c5::before{ background: linear-gradient(180deg,var(--neon-5), rgba(255,225,0,0.2)); box-shadow:0 0 20px var(--neon-5); }
+  .c6::before{ background: linear-gradient(180deg,var(--neon-6), rgba(162,0,255,0.2)); box-shadow:0 0 20px var(--neon-6); }
+
+  /* neon title color matching border */
+  .c1 .title{ color:var(--neon-1); text-shadow: 0 0 18px rgba(57,255,20,0.18); }
+  .c2 .title{ color:var(--neon-2); text-shadow: 0 0 18px rgba(0,234,255,0.12); }
+  .c3 .title{ color:var(--neon-3); text-shadow: 0 0 18px rgba(255,59,209,0.12); }
+  .c4 .title{ color:var(--neon-4); text-shadow: 0 0 18px rgba(255,75,75,0.12); }
+  .c5 .title{ color:var(--neon-5); text-shadow: 0 0 18px rgba(255,225,0,0.12); }
+  .c6 .title{ color:var(--neon-6); text-shadow: 0 0 18px rgba(162,0,255,0.12); }
+
+  /* make the short text slightly neon-tinted on hover/active */
+  .card.active .short{ color: rgba(255,255,255,0.88); filter: none; }
+
+  /* CTA glitchy button */
+  .cta-wrap{ width:100%; display:flex; justify-content:center; margin-top:28px; z-index:3;}
+  .cta{
+    display:inline-block;
+    padding:18px 30px;
+    border-radius:12px;
+    font-size:20px;
+    letter-spacing:6px;
+    text-transform:uppercase;
+    color:#ff5c5c;
+    border: 2px solid rgba(255,92,92,0.12);
+    box-shadow: 0 0 28px rgba(255,0,0,0.06), 0 6px 40px rgba(0,0,0,0.6), 0 0 40px rgba(255,0,0,0.08);
+    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.45));
+    text-shadow: 0 0 8px rgba(255,0,0,0.4);
+    transform:translateZ(0);
+    animation:glitchText 3s infinite linear;
+  }
+
+  @keyframes glitchText{
+    0%{ text-shadow: 0 0 8px rgba(255,0,0,0.35), -2px 0 6px rgba(255,0,0,0.18); transform:translateY(0);}
+    50%{ text-shadow: 0 0 20px rgba(255,0,0,0.5), 2px 0 10px rgba(255,0,0,0.18); transform:translateY(-1px);}
+    100%{ text-shadow: 0 0 8px rgba(255,0,0,0.35), -2px 0 6px rgba(255,0,0,0.18); transform:translateY(0);}
+  }
+
+  /* small responsive */
+  @media (max-width:1100px){
+    .grid{ grid-template-columns: repeat(2, 1fr); gap:20px; }
+    :root{ --card-w: 340px; }
+  }
+  @media (max-width:720px){
+    .grid{ grid-template-columns: 1fr; gap:18px; padding:0 18px; }
+    .page{ padding-top:72px; }
+    h1{ font-size:48px; }
+  }
+
+  /* small nice UX: show pointer item (outline) on hover but don't toggle active */
+  .card:hover{ transform: translateY(-4px); }
+
+  /* keep all cards same height when collapsed */
+  .card .meta { margin-top:auto; font-size:12px; color:rgba(255,255,255,0.38); letter-spacing:1px; }
+
+</style>
+</head>
+<body>
+    <video class="bg" autoplay muted loop playsinline>
+    <source src="./Pic14.mp4" type="video/mp4">
+</video>
+
+    <div class="navbar">
+  <a class="nav-item" data-text="PLAY AGAIN" href="page1.html">PLAY AGAIN</a>
+  <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
+  <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
+  <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
+  <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
+  <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
+  <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
+  <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
+</div>
+
+
+  <!-- Optional background video: replace src with your file or remove if you don't want it -->
+  <!-- <video class="bg" autoplay muted loop playsinline><source src="../Public/Pic13.mp4" type="video/mp4"></video> -->
+  <!-- or a gif as image -->
+  <!-- <img class="bg" src="../Public/Pic11.gif" alt="bg"> -->
+
+  <div class="overlay" aria-hidden="true"></div>
+
+  <main class="page" role="main">
+    <h1>PROJECTS</h1>
+    <div class="sub">Click any card to reveal the project — proceed at your own risk.</div>
+
+    <section class="grid" role="list">
+
+      <!-- Card 1 -->
+      <article class="card c1" role="listitem" data-id="1" tabindex="0" aria-expanded="false">
+        <div>
+          <h3 class="title">Automated <span style="opacity:.9;">Cyber-Ops Suite</span></h3>
+          <p class="short">A modular red-team toolkit for reconnaissance, exploit chaining, payload orchestration and collaborative reporting.</p>
+        </div>
+        <div class="detail" aria-hidden="true">
+          <strong>Cyber-Ops Suite — summary</strong>
+          <p style="margin-top:8px">
+            A fast, repeatable ops toolkit: network scanner, payload manager, log aggregator and reporting UI. Built for red-team automation and collaborative post-exploit analysis. Stack: Python, Go, Redis, Docker, Elastic stack.
+          </p>
+          <div class="meta">Status: Prototype / internal</div>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="card c2" role="listitem" data-id="2" tabindex="0" aria-expanded="false">
+        <div>
+          <h3 class="title">Secure Auth System</h3>
+          <p class="short">Robust authentication/authorization platform that hardens identity, sessions and token lifecycle for zero-trust services.</p>
+        </div>
+        <div class="detail" aria-hidden="true">
+          <strong>Secure Auth System — summary</strong>
+          <p style="margin-top:8px">
+            Hardened OIDC flows, session management, adaptive MFA and secure token lifecycle with fine-grained RBAC and audit trails. Designed for microservices and cloud-native infra.
+          </p>
+          <div class="meta">Status: Active development</div>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="card c3" role="listitem" data-id="3" tabindex="0" aria-expanded="false">
+        <div>
+          <h3 class="title">Darknet Monitor</h3>
+          <p class="short">Passive monitoring for exposed assets, data leaks and underground chatter — fast alerting & triage workflows.</p>
+        </div>
+        <div class="detail" aria-hidden="true">
+          <strong>Darknet Monitor — summary</strong>
+          <p style="margin-top:8px">
+            Crawls indexed dark-web sources, runs yara-based detections, and integrates with alert pipelines for triage. Useful for early detection of credential/asset exposures.
+          </p>
+          <div class="meta">Status: Beta</div>
+        </div>
+      </article>
+
+      <!-- Card 4 -->
+      <article class="card c4" role="listitem" data-id="4" tabindex="0" aria-expanded="false">
+        <div>
+          <h3 class="title">API Shield</h3>
+          <p class="short">High-performance gateway that enforces auth, rate-limiting and automated anomaly detection for APIs.</p>
+        </div>
+        <div class="detail" aria-hidden="true">
+          <strong>API Shield — summary</strong>
+          <p style="margin-top:8px">
+            Runtime protections, structural fuzz testing, and automatic policy enforcement for REST/GraphQL. Integrates with SIEM and incident response.
+          </p>
+          <div class="meta">Status: Prototype</div>
+        </div>
+      </article>
+
+      <!-- Card 5 -->
+      <article class="card c5" role="listitem" data-id="5" tabindex="0" aria-expanded="false">
+        <div>
+          <h3 class="title">Cloud Hardening Toolkit</h3>
+          <p class="short">Automated policy enforcement and drift detection with remediation blueprints for multi-cloud security.</p>
+        </div>
+        <div class="detail" aria-hidden="true">
+          <strong>Cloud Hardening Toolkit — summary</strong>
+          <p style="margin-top:8px">
+            Policy-as-code checks, drift alerts, auto-remediation playbooks and compliance reporting for AWS/GCP/Azure.
+          </p>
+          <div class="meta">Status: Active / internal</div>
+        </div>
+      </article>
+
+      <!-- Card 6 -->
+      <article class="card c6" role="listitem" data-id="6" tabindex="0" aria-expanded="false">
+        <div>
+          <h3 class="title">Malware Sandbox</h3>
+          <p class="short">Isolated detonation environment with behavioral capture, yara-based classification and export hooks for pipelines.</p>
+        </div>
+        <div class="detail" aria-hidden="true">
+          <strong>Malware Sandbox — summary</strong>
+          <p style="margin-top:8px">
+            Multi-OS sandboxing, automated containment, behavior trace, and extraction of indicators for threat intel and detection engineering.
+          </p>
+          <div class="meta">Status: Research</div>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- CTA -->
+    
+
+  </main>
+
+<script>
+  // Toggle active state on click; only one active at a time
+  (function(){
+    const cards = Array.from(document.querySelectorAll('.card'));
+    function setActive(card){
+      cards.forEach(c => {
+        if(c === card){
+          const was = c.classList.contains('active');
+          // toggle
+          if(was){
+            c.classList.remove('active');
+            c.setAttribute('aria-expanded','false');
+            c.querySelector('.detail').setAttribute('aria-hidden','true');
+          } else {
+            c.classList.add('active');
+            c.setAttribute('aria-expanded','true');
+            c.querySelector('.detail').setAttribute('aria-hidden','false');
+            // scroll into view a bit for small screens
+            setTimeout(()=> c.scrollIntoView({behavior:'smooth', block:'center'}),200);
+          }
+        } else {
+          c.classList.remove('active');
+          c.setAttribute('aria-expanded','false');
+          c.querySelector('.detail').setAttribute('aria-hidden','true');
+        }
+      })
+    }
+
+    cards.forEach(c=>{
+      c.addEventListener('click', ()=> setActive(c));
+      // keyboard accessibility (enter / space)
+      c.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          setActive(c);
+        }
+      });
+    });
+
+    // optional: click outside to collapse all
+    document.addEventListener('click', (e)=>{
+      const inside = !!e.target.closest('.card');
+      if(!inside){
+        cards.forEach(c=>{
+          c.classList.remove('active');
+          c.setAttribute('aria-expanded','false');
+          c.querySelector('.detail').setAttribute('aria-hidden','true');
+        });
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

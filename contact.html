@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CONTACTS — KHUSHI</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+    /* ---- FORM CARD POSITION ---- */
+.contact-form-wrapper{
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 9999;
+}
+
+/* ---- BASE GLASS CARD (from Uiverse) ---- */
+.form-card-neon {
+  width: 260px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background: rgba(0,0,0,0.35);
+  border-radius: 14px;
+  border: 2px solid rgba(255,255,255,0.06);
+  box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.04);
+  backdrop-filter: blur(8px);
+}
+
+/* ---- TITLE ---- */
+.form-card-neon .title {
+  margin-bottom: 1.4rem;
+  font-size: 1.6em;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--neon-3); /* neon pink */
+  text-shadow: 0 0 12px var(--neon-3);
+}
+
+/* ---- FIELDS ---- */
+.form-card-neon .field {
+  margin-top: .9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6em;
+  background-color: rgba(0,0,0,0.55);
+  border: 2px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: .6em 1em;
+  transition: .25s ease;
+  box-shadow: 0 0 14px rgba(0,255,180,0.05);
+}
+
+.form-card-neon .field:hover {
+  border-color: var(--neon-2);
+  box-shadow: 0 0 16px var(--neon-2);
+}
+
+.input-icon {
+  height: 1.1em;
+  width: 1.1em;
+  fill: var(--neon-2);
+  filter: drop-shadow(0 0 6px var(--neon-2));
+}
+
+.input-field {
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: #fff;
+  font-size: .9em;
+  letter-spacing: 1px;
+}
+
+/* ---- BUTTON ---- */
+.form-card-neon .btn {
+  margin-top: 1.4rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: .85em;
+  text-transform: uppercase;
+  padding: 0.7em 1.5em;
+  background-color: var(--neon-1);
+  color: #000;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 20px var(--neon-1), 0 0 40px rgba(57,255,20,0.18);
+  transition: 0.25s ease-in-out;
+}
+
+.form-card-neon .btn:hover {
+  background-color: #000;
+  color: var(--neon-1);
+  box-shadow: 0 0 25px var(--neon-1), inset 0 0 15px var(--neon-1);
+}
+
+    .navbar {
+  position: fixed; top: 0; left: 0; width: 100%;
+  padding: 18px 40px; display:flex; justify-content:center; gap:40px;
+  z-index: 999; backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.25); border-bottom: 1px solid rgba(57,255,20,0.18);
+}
+.nav-item { font-size: clamp(14px, 1.2vw, 18px); color: #39ff14; letter-spacing:1px; text-decoration:none; position:relative; text-shadow:0 0 8px #39ff14; }
+.nav-item::after{ content: attr(data-text); position:absolute; left:2px; top:0; color:#39ff14; opacity:.4; z-index:-1; text-shadow:-2px 0 #ff00c8; clip-path: polygon(0 0,100% 0,100% 40%,0 40%); animation: glitch 1.3s infinite linear alternate-reverse; }
+  :root{
+    --bg:#000;
+    --neon-1:#39ff14;
+    --neon-2:#00eaff;
+    --neon-3:#ff3bd1;
+    --neon-4:#ff4b4b;
+    --neon-5:#ffe100;
+    --neon-6:#a200ff;
+    --glass-bg: rgba(255,255,255,0.02);
+    --glass-border: rgba(255,255,255,0.06);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--bg);font-family:"Share Tech Mono", monospace;color:#fff;overflow:hidden}
+  a{color:inherit}
+  /* Background video placeholder - replace src in <video> */
+  .bg{
+    position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; filter:brightness(.45) contrast(1.05);
+  }
+  .overlay{position:fixed; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.45)); z-index:0; pointer-events:none;}
+
+  .page {
+    position:relative;
+    z-index:2;
+    min-height:100vh;
+    padding:72px 24px 92px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    transform: translateY(-18px); /* subtle upward nudge to match other pages */
+  }
+
+  h1{font-size:48px;margin:0;letter-spacing:6px}
+  p.lead{color:rgba(255,255,255,0.66); margin:0 0 12px; font-size:14px}
+
+  /* container row */
+  .container-row{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:nowrap;
+    z-index:3;
+  }
+
+  /* the Uiverse card container (we will create multiple) */
+  .container{
+    --r: 6; /* rotation variable */
+    position: relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:200px;
+    height:240px;
+    margin:0 -36px;
+    transition:0.45s cubic-bezier(.2,.85,.25,1);
+    transform: rotate(calc(var(--r) * 1deg));
+    z-index:2;
+  }
+
+  /* on hover spread them and reset rotation */
+  .container:hover{ transform: rotate(0deg); margin:0 10px; }
+
+  .glass{
+    position: relative;
+    width: 180px;
+    height: 200px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 3px solid var(--glass-border);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 30px rgba(0,0,0,0.5);
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+    transition: 0.45s cubic-bezier(.2,.85,.25,1);
+    border-radius:12px;
+    padding:14px;
+    backdrop-filter: blur(8px) saturate(1.2);
+    overflow:visible;
+  }
+
+  /* label/status bar: platform name */
+  .glass::before{
+    content: attr(data-text);
+    position:absolute;
+    bottom:8px;
+    width:calc(100% - 12px);
+    height:34px;
+    left:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background: rgba(255,255,255,0.02);
+    color:rgba(255,255,255,0.9);
+    border-radius:8px;
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  /* SVG icon area */
+  .icon-wrap{
+    width:64px; height:64px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:6px;
+    transition: transform .28s ease, box-shadow .28s ease;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.02);
+  }
+
+  /* center contact text */
+  .contact {
+    margin-top:10px;
+    text-align:center;
+    font-size:14px;
+    letter-spacing:0.6px;
+    line-height:1.35;
+    color:rgba(255,255,255,0.95);
+    word-break:break-word;
+    padding:0 6px;
+  }
+
+  /* small hint under contact (type) */
+  .contact small{ display:block; color:rgba(255,255,255,0.6); margin-top:10px; font-size:11px; letter-spacing:1px }
+
+  /* neon outline variants for each glass */
+  .c1 .glass{ border-color:var(--neon-1); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 24px var(--neon-1), 0 0 48px rgba(57,255,20,0.06); }
+  .c2 .glass{ border-color:var(--neon-2); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 24px var(--neon-2), 0 0 48px rgba(0,234,255,0.06); }
+  .c3 .glass{ border-color:var(--neon-3); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 24px var(--neon-3), 0 0 48px rgba(255,59,209,0.06); }
+  .c4 .glass{ border-color:var(--neon-4); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 24px var(--neon-4), 0 0 48px rgba(255,75,75,0.06); }
+  .c5 .glass{ border-color:var(--neon-5); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 24px var(--neon-5), 0 0 48px rgba(255,225,0,0.06); }
+  .c6 .glass{ border-color:var(--neon-6); box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 24px var(--neon-6), 0 0 48px rgba(162,0,255,0.06); }
+
+  /* icon neon tint */
+  .c1 .icon-wrap svg{ filter: drop-shadow(0 0 12px var(--neon-1)); color:var(--neon-1); fill:var(--neon-1); }
+  .c2 .icon-wrap svg{ filter: drop-shadow(0 0 12px var(--neon-2)); color:var(--neon-2); fill:var(--neon-2); }
+  .c3 .icon-wrap svg{ filter: drop-shadow(0 0 12px var(--neon-3)); color:var(--neon-3); fill:var(--neon-3); }
+  .c4 .icon-wrap svg{ filter: drop-shadow(0 0 12px var(--neon-4)); color:var(--neon-4); fill:var(--neon-4); }
+  .c5 .icon-wrap svg{ filter: drop-shadow(0 0 12px var(--neon-5)); color:var(--neon-5); fill:var(--neon-5); }
+  .c6 .icon-wrap svg{ filter: drop-shadow(0 0 12px var(--neon-6)); color:var(--neon-6); fill:var(--neon-6); }
+
+  /* hover micro animation */
+  .container:hover .glass{ transform: translateY(-6px); }
+  .container:hover .icon-wrap{ transform: scale(1.06); }
+
+  /* layout responsive */
+  .wrap-rows{ display:flex; flex-direction:column; gap:18px; align-items:center; }
+  .row { display:flex; gap:12px; justify-content:center; align-items:center; }
+
+  @media (max-width:880px){
+    .container-row{ gap:12px; }
+    .container{ width:160px; height:210px; margin:0 -26px;}
+    .glass{ width:150px; height:180px; }
+  }
+  @media (max-width:520px){
+    .row{ flex-wrap:wrap; gap:12px; }
+    .container{ margin:6px;}
+  }
+
+  /* download CV link */
+  .cv-link{ margin-top:8px; color:rgba(255,255,255,0.9); text-decoration:none; font-size:13px; padding:8px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.01); }
+  .cv-link:hover{ box-shadow: 0 0 18px rgba(255,255,255,0.03) }
+</style>
+</head>
+<body>
+    <div class="navbar">
+  <a class="nav-item" data-text="PLAY AGAIN" href="page1.html">PLAY AGAIN</a>
+  <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
+  <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
+  <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
+  <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
+  <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
+  <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
+  <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
+</div>
+
+  <!-- background video tag: replace the src with your video file -->
+  <video class="bg" autoplay muted loop playsinline>
+    <source src="./Pic15.mp4" type="video/mp4">
+  </video>
+  <div class="overlay" aria-hidden="true"></div>
+
+  <main class="page" role="main" aria-label="Contacts">
+    <h1>CONTACTS</h1>
+    <p class="lead">Choose a channel — they all reach me. (Hover to unlock)</p>
+
+    <div class="wrap-rows">
+
+      <!-- top row: 3 items -->
+      <div class="row" role="list">
+        <!-- EMAIL -->
+        <div class="container c1" style="--r:8" role="listitem">
+            <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox" target="_blank">
+          <div class="glass" data-text="email">
+            <div class="icon-wrap" aria-hidden="true">
+              <!-- envelope svg -->
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 6.5C3 5.67157 3.67157 5 4.5 5H19.5C20.3284 5 21 5.67157 21 6.5V17.5C21 18.3284 20.3284 19 19.5 19H4.5C3.67157 19 3 18.3284 3 17.5V6.5Z" stroke="none" fill="currentColor"/>
+                <path d="M21 6.5L12 12.2L3 6.5" stroke="none" fill="currentColor"/>
+              </svg>
+            </div>
+
+            <div class="contact" >
+              <strong>2945khushi@example.com</strong>
+              <small>Primary email</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHONE -->
+        <div class="container c2" style="--r:4" role="listitem">
+          <div class="glass" data-text="phone">
+            <div class="icon-wrap" aria-hidden="true">
+              <!-- phone svg -->
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.6 10.2C7.9 13.6 10.4 16.1 13.8 17.4L16.1 15.99C16.5 15.79 17 15.85 17.3 16.15L19.6 18.45C20 18.85 20 19.48 19.6 19.9C17.5 22 14.2 22.52 11 21.23C6.88 19.63 3.37 16.12 1.77 12C0.48 8 -0.04 4.69 2.06 2.58C2.48 2.16 3.11 2.16 3.51 2.56L5.82 4.88C6.12 5.18 6.17 5.63 5.98 6.04L4.58 8.35C4.39 8.76 4.45 9.21 4.85 9.61L6.6 10.2Z" fill="currentColor"/>
+              </svg>
+            </div>
+
+            <div class="contact">
+              <strong>+91 93159 86248</strong>
+              <small>Call / WhatsApp</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- GITHUB -->
+        <div class="container c3" style="--r:-6" role="listitem">
+            <a href="https://github.com/2945khushi/kbay" target="_blank">
+          <div class="glass" data-text="github">
+            <div class="icon-wrap" aria-hidden="true">
+              <!-- github svg -->
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 12.26 7.17 14.9 10 15.8C9.65 15.9 9.27 15.96 8.88 15.96C8.55 15.96 8.32 15.82 8.32 15.82C8.32 15.82 8.32 17.08 8.32 17.98C8.32 19.66 8.32 20.24 7.73 20.24C6.98 20.24 6.44 19.68 6.44 19.68C6.44 19.68 6.44 18.62 6.44 17.86C6.44 16.46 7.33 16.01 7.33 16.01C7.33 16.01 8.95 16.45 9.72 17.23C10.49 18 11.47 18.24 12.6 18.22C13.73 18.24 14.71 18 15.48 17.23C16.25 16.45 17.87 16.01 17.87 16.01C17.87 16.01 18.76 16.46 18.76 17.86C18.76 18.62 18.76 19.69 18.76 19.69C18.76 19.69 18.22 20.25 17.47 20.25C16.88 20.25 16.88 19.66 16.88 17.98C16.88 17.08 16.88 15.82 16.88 15.82C16.88 15.82 16.65 15.96 16.32 15.96C15.93 15.96 15.55 15.9 15.2 15.8C17.99 14.9 20.16 12.26 20.16 9C20.16 5.13 17.03 2 13.16 2H12Z" fill="currentColor"/>
+              </svg>
+            </div>
+
+            <div class="contact">
+              <strong>2945khushi/kbay</strong>
+              <small></small>
+            </div>
+          </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- bottom row: 3 items -->
+      <div class="row" role="list">
+        <!-- LINKEDIN -->
+        <div class="container c4" style="--r:6" role="listitem">
+            <a href="https://www.linkedin.com/in/khushi-verma-63245b376/" target="_blank">
+          <div class="glass" data-text="linkedin">
+            <div class="icon-wrap" aria-hidden="true">
+              <!-- linkedin svg -->
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6C1.1 6 0 4.88 0 3.5C0 2.12 1.12 1 2.48 1C3.86 1 4.98 2.12 4.98 3.5Z" fill="currentColor"/>
+                <path d="M0.5 8.5H4.5V22H0.5V8.5Z" fill="currentColor"/>
+                <path d="M8.5 8.5H12.3V10.5H12.4C12.99 9.46 14.38 8.4 16.58 8.4C21.28 8.4 22 11.4 22 15.48V22H18V15.96C18 13.74 17.5 11.94 15.02 11.94C12.54 11.94 12 13.62 12 15.78V22H8.5V8.5Z" fill="currentColor"/>
+              </svg>
+            </div>
+            <div class="contact">
+              <strong>www.linkedin.com/in/khushi-verma-63245b376</strong>
+              <small></small>
+            </div>
+          </div>
+          </a>
+        </div>
+
+        <!-- INSTAGRAM -->
+        <div class="container c5" style="--r:-4" role="listitem">
+            <a href="https://www.instagram.com/khu.shii._05?igsh=d2ZwYm93YmFkbmVs" target="_blank">
+          <div class="glass" data-text="instagram">
+            <div class="icon-wrap" aria-hidden="true">
+              <!-- instagram svg -->
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 2H17C19.76 2 22 4.24 22 7V17C22 19.76 19.76 22 17 22H7C4.24 22 2 19.76 2 17V7C2 4.24 4.24 2 7 2Z" fill="currentColor"/>
+                <path d="M12 7.2C9.18 7.2 6.94 9.44 6.94 12.26C6.94 15.08 9.18 17.32 12 17.32C14.82 17.32 17.06 15.08 17.06 12.26C17.06 9.44 14.82 7.2 12 7.2Z" fill="currentColor"/>
+                <path d="M18.4 6.1C18.4 6.66 17.95 7.11 17.39 7.11C16.83 7.11 16.38 6.66 16.38 6.1C16.38 5.54 16.83 5.09 17.39 5.09C17.95 5.09 18.4 5.54 18.4 6.1Z" fill="currentColor"/>
+              </svg>
+            </div>
+
+            <div class="contact">
+              <strong>@khu.shii._05</strong>
+              <small></small>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOCATION -->
+        <div class="container c6" style="--r:2" role="listitem">
+          <div class="glass" data-text="location">
+            <div class="icon-wrap" aria-hidden="true">
+              <!-- location svg -->
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 13.25 12 22 12 22C12 22 19 13.25 19 9C19 5.13 15.87 2 12 2Z" fill="currentColor"/>
+                <path d="M12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill="currentColor"/>
+              </svg>
+            </div>
+
+            <div class="contact">
+              <strong>New Delhi, India</strong>
+              <small>Timezone: IST (UTC+5:30)</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- download CV (points to uploaded PDF) -->
+    <a class="cv-link" style="font-size: x-large;" href="./current cv.pdf " download>Download Resume</a>
+
+  </main>
+
+<script>
+  // keyboard / click accessibility for each container - expands slightly on focus/click
+  document.querySelectorAll('.container').forEach(c=>{
+    c.addEventListener('click', ()=> {
+      // small pulse animation on click
+      const g = c.querySelector('.glass');
+      g.style.transform = 'translateY(-6px) scale(1.02)';
+      setTimeout(()=> g.style.transform = '', 260);
+    });
+    c.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        c.click();
+      }
+    });
+  });
+</script>
+<!-- CONTACT FORM (bottom-right floating card) -->
+<form action="https://api.web3forms.com/submit" method="POST" class="contact-form-wrapper">
+
+  <!-- required hidden key -->
+  <input type="hidden" name="access_key" value="eaf189c2-9829-4783-8bb9-8fef5ab523e0">
+
+  <div class="card form-card-neon">
+
+    <p class="title">REACH OUT</p>
+
+    <!-- Name -->
+    <div class="field">
+      <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+      </svg>
+      <input autocomplete="off" id="name" name="name" placeholder="Your Name" type="text" class="input-field" required>
+    </div>
+
+    <!-- Requirement -->
+    <div class="field">
+      <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M2 2h12v12H2z"/>
+      </svg>
+      <input autocomplete="off" id="req" name="requirement" placeholder="Your Requirement" type="text" class="input-field" required>
+    </div>
+
+    <!-- Contact -->
+    <div class="field">
+      <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M1.5 1.5h13v13h-13z"/>
+      </svg>
+      <input autocomplete="off" id="contact" name="contact" placeholder="Phone / Email" type="text" class="input-field" required>
+    </div>
+
+    <button class="btn" type="submit">Submit</button>
+
+  </div>
+
+</form>
+
+</body>
+</html>

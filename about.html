@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>About — KHUSHI</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #050409;
+    --glass: rgba(255,255,255,0.03);
+    --neon-green: #39ff14;
+    --neon-soft: rgba(57,255,20,0.12);
+    --accent: linear-gradient(90deg, rgba(57,255,20,0.06), rgba(155,123,255,0.03));
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:var(--bg);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:#dfffe0;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow:hidden;
+  }
+
+  /* Background video */
+  video.bg {
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:0;
+    filter:contrast(1.05) brightness(0.6) saturate(1.05);
+    transform: scale(1.02);
+  }
+
+  /* subtle overlay */
+  .overlay {
+    position:fixed;
+    inset:0;
+    z-index:1;
+    background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.6));
+    pointer-events:none;
+  }
+
+  /* decorative binary rows (top & bottom) */
+  .binary {
+    position:fixed;
+    left:0;
+    right:0;
+    text-align:center;
+    color:var(--neon-green);
+    font-family: "Share Tech Mono", monospace;
+    font-size:clamp(10px,1.2vw,14px);
+    letter-spacing:3px;
+    z-index:8;
+    opacity:0.85;
+    text-shadow:0 0 8px rgba(57,255,20,0.14);
+    pointer-events:none;
+  }
+  .binary.top { top:18px; }
+  .binary.top + .binary { top:42px; }
+  .binary.top + .binary + .binary { top:66px; }
+  .binary.bottom1 { bottom:66px; }
+  .binary.bottom2 { bottom:42px; }
+  .binary.bottom3 { bottom:18px; }
+
+  /* page container */
+  .page {
+    position:relative;
+    z-index:5;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    box-sizing:border-box;
+  }
+
+  /* center area holds tiles grid */
+  .grid {
+    width: min(1200px, 92%);
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 26px 34px;
+    align-items:stretch;
+    justify-items:stretch;
+    z-index:6;
+    backdrop-filter: blur(6px) saturate(1.05);
+  }
+
+  /* tile base */
+  .tile {
+    position:relative;
+    padding:22px 26px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(57,255,20,0.06);
+    box-shadow:
+      0 8px 34px rgba(0,0,0,0.6),
+      inset 0 0 40px rgba(57,255,20,0.01);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    overflow:hidden;
+    color: #dfffe0;
+    min-height:110px;
+  }
+
+  /* neon border accent */
+  .tile::before{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    border-radius:13px;
+    pointer-events:none;
+    background: linear-gradient(90deg, rgba(57,255,20,0.06), rgba(57,255,20,0.02));
+    mask: linear-gradient(#000, #000);
+    opacity: 0.9;
+    mix-blend-mode: screen;
+    filter: blur(8px);
+  }
+
+  /* subtle top-right LED pixel cluster */
+  .tile::after{
+    content:"";
+    position:absolute;
+    right:12px;
+    top:10px;
+    width:6px;
+    height:6px;
+    background:var(--neon-green);
+    box-shadow:
+      -8px 0 0 rgba(57,255,20,0.14),
+      -16px 0 0 rgba(57,255,20,0.08),
+      -24px 0 0 rgba(57,255,20,0.04);
+    opacity:0.9;
+    border-radius:2px;
+  }
+
+  /* hover */
+  .tile:hover{
+    transform: translateY(-6px) scale(1.01);
+    border-color: rgba(57,255,20,0.35);
+    box-shadow:
+      0 20px 60px rgba(57,255,20,0.08),
+      inset 0 0 80px rgba(57,255,20,0.02);
+  }
+
+  /* title (number + label) */
+  .t-head {
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    margin-bottom:10px;
+    font-family: "Share Tech Mono", monospace;
+    color:var(--neon-green);
+    font-weight:700;
+    letter-spacing:1px;
+    text-shadow:0 0 10px rgba(57,255,20,0.14);
+    font-size:clamp(14px,1.2vw,18px);
+  }
+
+  .t-num{
+    color:var(--neon-green);
+    opacity:0.95;
+    font-weight:800;
+  }
+
+  .t-title{
+    font-weight:800;
+    color:var(--neon-green);
+  }
+
+  /* body text */
+  .t-body{
+    font-size:clamp(13px,1.25vw,16px);
+    color: rgba(220,255,220,0.95);
+    line-height:1.35;
+    max-width:100%;
+    margin-top:4px;
+  }
+
+  /* bulleted list style inside tile */
+  .t-list{
+    margin:8px 0 0 0;
+    padding-left:18px;
+    display:block;
+    color: rgba(200,255,200,0.95);
+    font-size:clamp(13px,1.05vw,15px);
+  }
+  .t-list li{
+    margin:8px 0;
+    line-height:1.3;
+    list-style:none;
+    position:relative;
+  }
+  .t-list li::before{
+    content:"•";
+    color:var(--neon-green);
+    position:absolute;
+    left:-18px;
+    top:0;
+    font-size:16px;
+    text-shadow:0 0 8px rgba(57,255,20,0.2);
+  }
+
+  /* final rules tile uses stronger emphasis */
+  .final .t-head, .final .t-title{ color: #ffd36b; text-shadow: 0 0 14px rgba(255,211,107,0.12); }
+  .final .t-body { color: #fff0d6; font-weight:700; }
+
+  /* responsive tweaks */
+  @media (max-width:920px) {
+    .grid { grid-template-columns: 1fr; gap:18px 0; width:92%; }
+    .tile { min-height: auto; }
+  }
+
+</style>
+</head>
+<body>
+    <!-- GLOBAL NEON GLITCH NAVBAR -->
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    z-index: 999;
+    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(57,255,20,0.18);
+}
+
+.nav-item {
+    font-family: "Share Tech Mono", monospace;
+    font-size: clamp(14px, 1.2vw, 18px);
+    color: #39ff14;
+    text-decoration: none;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-shadow: 0 0 8px #39ff14;
+    transition: 0.2s ease;
+    position: relative;
+}
+
+/* glitch effect */
+.nav-item::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 2px;
+    top: 0;
+    color: #39ff14;
+    opacity: 0.4;
+    z-index: -1;
+    text-shadow: -2px 0 #ff00c8;
+    clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+    animation: glitch 1.3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(-1px, -1px); }
+    60% { transform: translate(1px, 1px); }
+    80% { transform: translate(1px, -1px); }
+    100% { transform: translate(0); }
+}
+
+.nav-item:hover {
+    color: white;
+    text-shadow: 0 0 18px #39ff14, 0 0 28px #39ff14;
+    transform: translateY(-2px);
+}
+</style>
+
+<div class="navbar">
+    <a class="nav-item" data-text="PLAY AGAIN" href="page1.html">PLAY AGAIN</a>
+    <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
+    <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
+    <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
+    <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
+    <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
+    <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
+    <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
+</div>
+
+  <!-- background video (replace path if needed) -->
+  <video class="bg" autoplay muted loop playsinline>
+    <source src="./Pic16.mp4" type="video/mp4">
+  </video>
+
+  <div class="overlay" aria-hidden="true"></div>
+
+  <!-- decorative binary -->
+  <div class="binary top">101010110010110010101001011010010110010110010110010</div>
+  <div class="binary">110010101011001010101010110110010101011001010110010</div>
+  <div class="binary">010101100101011001010110110010010101101001010101010</div>
+
+
+  <div class="page" role="main" aria-label="About Khushi">
+    <div class="grid" role="list">
+
+      <!-- 01 PLAYER -->
+      <div class="tile" role="listitem" aria-label="Player info">
+        <div class="t-head">
+          <div class="t-num">01.</div>
+          <div class="t-title">PLAYER: KHUSHI</div>
+        </div>
+        <div class="t-body">
+          <strong>STATUS:</strong> ACTIVE · EVOLVING · UNCOMPROMISING<br>
+          <strong>BACKSTORY:</strong> BUILT FROM SCRATCH. LEVELING UP BY DESIGN.
+        </div>
+      </div>
+
+      <!-- 02 ROLE -->
+      <div class="tile" role="listitem" aria-label="Role">
+        <div class="t-head">
+          <div class="t-num">02.</div>
+          <div class="t-title">ROLE: CYBERSECURITY &amp; DEVSECOPS SPECIALIST</div>
+        </div>
+        <div class="t-body">
+          <strong>FOCUS:</strong> OFFENSIVE SECURITY · SECURE FULL-STACK ARCHITECTURE<br>
+          <strong>OBJECTIVE:</strong> BUILD SYSTEMS THAT REFUSE TO BREAK.
+        </div>
+      </div>
+
+      <!-- 03 CORE ABILITIES -->
+      <div class="tile" role="listitem" aria-label="Core abilities">
+        <div class="t-head">
+          <div class="t-num">03.</div>
+          <div class="t-title">CORE ABILITIES</div>
+        </div>
+        <ul class="t-list" aria-hidden="false">
+          <li>Offensive security &amp; penetration testing</li>
+          <li>Secure full-stack application development</li>
+          <li>Systems architecture &amp; AI/ML integration</li>
+          <li>DevSecOps &amp; modern security engineering</li>
+          <li>Precision-driven, minimal design philosophy</li>
+          <li>Curiosity for dark-tech environments</li>
+        </ul>
+      </div>
+
+      <!-- 04 PERSONAL TRAITS -->
+      <div class="tile" role="listitem" aria-label="Personal traits">
+        <div class="t-head">
+          <div class="t-num">04.</div>
+          <div class="t-title">PERSONAL TRAITS</div>
+        </div>
+        <ul class="t-list">
+          <li>Discipline over distraction</li>
+          <li>Strategy over chaos</li>
+          <li>Execution over excuses</li>
+          <li>Silent work · loud results</li>
+        </ul>
+      </div>
+
+      <!-- 05 OPERATING PRINCIPLES -->
+      <div class="tile" role="listitem" aria-label="Operating principles">
+        <div class="t-head">
+          <div class="t-num">05.</div>
+          <div class="t-title">LEVELS CROSSED</div>
+        </div>
+        <ul class="t-list">
+          <li>12TH(PCB):SUN VALLEY INTERNATIONAL SCHOOL</li>
+          <li>12TH(PCM):NIOS(KENDRIYA VIDYALAYA)</li>
+          <li>B.TECH CSE(2025-2029):IGDTUW</li>
+        </ul>
+      </div>
+
+      <!-- 06 FINAL RULES -->
+      <div class="tile final" role="listitem" aria-label="Final rules">
+        <div class="t-head">
+          <div class="t-num">06.</div>
+          <div class="t-title">FINAL RULES OF THE GAME</div>
+        </div>
+        <div class="t-body">
+          TAKE THE RULES.<br>
+          MASTER THE LEVELS.<br>
+          BREAK NOTHING...<br>
+          EXCEPT LIMITS.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="binary binary-bottom1">110101101001101010011001011010010110100110101010011010</div>
+  <div class="binary binary-bottom2">010110010110100101101001011010010101101010010101101001</div>
+  <div class="binary binary-bottom3">101001101010101100101100101101001101010100110011010100</div>
+
+</body>
+</html>

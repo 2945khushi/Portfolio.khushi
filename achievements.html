@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Achievements — KHUSHI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --neon-green:#39ff14;
+  --neon-blue:#00eaff;
+  --neon-pink:#ff3bd1;
+  --neon-red:#ff4b4b;
+  --card-w: 260px;
+  --card-h: 380px;
+}
+
+/* GLOBAL */
+html,body{
+  height:100%;
+  margin:0;
+  background:#000;
+  font-family:"Share Tech Mono", monospace;
+  overflow:hidden;
+}
+
+/* BG VIDEO */
+.bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+  filter:brightness(.45) contrast(1.15);
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:1;
+}
+
+/* TOP BINARY */
+.binary-top{
+  position:fixed;
+  top:18px;
+  width:100%;
+  text-align:center;
+  color:var(--neon-green);
+  font-size:13px;
+  letter-spacing:3px;
+  z-index:5;
+}
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    z-index: 999;
+    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(57,255,20,0.18);
+}
+
+.nav-item {
+    font-family: "Share Tech Mono", monospace;
+    font-size: clamp(14px, 1.2vw, 18px);
+    color: #39ff14;
+    text-decoration: none;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-shadow: 0 0 8px #39ff14;
+    transition: 0.2s ease;
+    position: relative;
+}
+
+/* glitch effect */
+.nav-item::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 2px;
+    top: 0;
+    color: #39ff14;
+    opacity: 0.4;
+    z-index: -1;
+    text-shadow: -2px 0 #ff00c8;
+    clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+    animation: glitch 1.3s infinite linear alternate-reverse;
+}
+
+
+/* CARDS ROW */
+.card-row{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  display:flex;
+  gap:52px;
+  z-index:4;
+  perspective:1400px;
+}
+
+/* CARD */
+.card{
+  width:var(--card-w);
+  height:var(--card-h);
+  position:relative;
+  perspective:1200px;
+}
+
+/* FLIP LAYER */
+.inner{
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:transform .85s;
+}
+.card:hover .inner{ transform:rotateY(180deg); }
+
+/* FRONT + BACK FACES */
+.face{
+  position:absolute;
+  inset:0;
+  border-radius:12px;
+  backface-visibility:hidden;
+  padding:18px;
+  background:rgba(0,0,0,0.25);
+}
+
+/* === FRONT FACE (CENTER FIX) === */
+.front{
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center; /* Full perfect center */
+  align-items:center;
+  text-align:center;
+  color:inherit;
+  padding-top:40px;   /* allows corners to sit independently */
+  padding-bottom:40px;
+}
+
+/* PERFECT CENTER SUIT */
+.big-suit{
+  font-size:100px;
+  margin:0;
+  text-shadow:0 0 30px currentColor, 0 0 60px currentColor;
+}
+
+/* PERFECT CENTER TITLE */
+.card-title{
+  font-size:20px;
+  margin-top:10px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:currentColor;
+  text-shadow:0 0 10px currentColor;
+}
+
+/* === CORNERS (UNCHANGED) === */
+.corner{
+  font-size:20px;
+  font-weight:bold;
+  text-shadow:0 0 10px currentColor;
+}
+.front .top{
+  position:absolute;
+  top:14px;
+  left:14px;
+  display:flex;
+  gap:6px;
+}
+.front .bottom{
+  position:absolute;
+  right:14px;
+  bottom:14px;
+  transform:rotate(180deg);
+  display:flex;
+  gap:6px;
+}
+
+/* BACK FACE */
+.back{
+  transform:rotateY(180deg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-size:14px;
+  color:white;
+  padding:30px;
+}
+
+/* === BRIGHT, THICK NEON BORDERS === */
+.cardA .face{
+  border:3px solid rgba(57,255,20,0.9);
+  box-shadow:0 0 15px rgba(57,255,20,0.7), 0 0 35px rgba(57,255,20,0.4);
+}
+.cardK .face{
+  border:3px solid rgba(0,234,255,0.9);
+  box-shadow:0 0 15px rgba(0,234,255,0.7), 0 0 35px rgba(0,234,255,0.4);
+}
+.cardQ .face{
+  border:3px solid rgba(255,59,209,0.9);
+  box-shadow:0 0 15px rgba(255,59,209,0.7), 0 0 35px rgba(255,59,209,0.4);
+}
+.cardJ .face{
+  border:3px solid rgba(255,75,75,0.9);
+  box-shadow:0 0 15px rgba(255,75,75,0.7), 0 0 35px rgba(255,75,75,0.4);
+}
+
+/* COLOR ASSIGNMENTS */
+.cardA{ color:var(--neon-green); }
+.cardK{ color:var(--neon-blue); }
+.cardQ{ color:var(--neon-pink); }
+.cardJ{ color:var(--neon-red); }
+</style>
+</head>
+<body>
+
+<!-- BG VIDEO -->
+<video class="bg" autoplay muted loop playsinline>
+  <source src="./Pic12.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<div class="binary-top">101100101011001010110010110010110010110010110010110010</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a class="nav-item" data-text="PLAY AGAIN" href="page1.html">PLAY AGAIN</a>
+    <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
+    <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
+    <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
+    <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
+    <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
+    <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
+    <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
+</div>
+
+<!-- CARD ROW -->
+<div class="card-row">
+
+  <!-- A♣ -->
+  <div class="card cardA">
+    <div class="inner">
+      <div class="face front">
+        <div class="top"><div class="corner">A</div><div class="corner">♣</div></div>
+
+        <div class="big-suit">♣</div>
+        <div class="card-title">OSCP</div>
+
+        <div class="bottom"><div class="corner">♣</div><div class="corner">A</div></div>
+      </div>
+
+      <div class="face back">
+        OSCP — Hands-on penetration testing certification focusing on real-world exploit
+        development and post-exploitation methodology.
+      </div>
+    </div>
+  </div>
+
+  <!-- K♠ -->
+  <div class="card cardK">
+    <div class="inner">
+      <div class="face front">
+        <div class="top"><div class="corner">K</div><div class="corner">♠</div></div>
+
+        <div class="big-suit">♠</div>
+        <div class="card-title">CERT-IN INTERN</div>
+
+        <div class="bottom"><div class="corner">♠</div><div class="corner">K</div></div>
+      </div>
+
+      <div class="face back">
+        Assisted national cyber defence operations: threat research, incident triage, 
+        and coordinated vulnerability reporting.
+      </div>
+    </div>
+  </div>
+
+  <!-- Q♥ -->
+  <div class="card cardQ">
+    <div class="inner">
+      <div class="face front">
+        <div class="top"><div class="corner">Q</div><div class="corner">♥</div></div>
+
+        <div class="big-suit">♥</div>
+        <div class="card-title">CYBER-OPS SUITE</div>
+
+        <div class="bottom"><div class="corner">♥</div><div class="corner">Q</div></div>
+      </div>
+
+      <div class="face back">
+        Built red-team automation toolkit for scanning, logging, and detection-response
+        workflows with secure backend architecture.
+      </div>
+    </div>
+  </div>
+
+  <!-- J♦ -->
+  <div class="card cardJ">
+    <div class="inner">
+      <div class="face front">
+        <div class="top"><div class="corner">J</div><div class="corner">♦</div></div>
+
+        <div class="big-suit">♦</div>
+        <div class="card-title">HACKATHON FINALIST</div>
+
+        <div class="bottom"><div class="corner">♦</div><div class="corner">J</div></div>
+      </div>
+
+      <div class="face back">
+        Developed a full security workflow under timed hackathon conditions demonstrating rapid
+        execution and strong technical precision.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

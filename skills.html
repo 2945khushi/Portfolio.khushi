@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Skills — KHUSHI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+    .binary-vert{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    font-family:"Share Tech Mono", monospace;
+    font-size:clamp(10px,1.2vw,16px);
+    color:#39ff14;
+    text-shadow:0 0 8px #39ff14;
+    opacity:0.85;
+    line-height:1.1;
+    z-index:20;
+    pointer-events:none;
+    animation:vertGlitch 3s infinite;
+}
+
+.left-vert{
+    left:18px;
+    text-align:center;
+}
+
+.right-vert{
+    right:18px;
+    text-align:center;
+}
+
+@keyframes vertGlitch{
+    0%   { opacity:.85; transform:translateY(-50%) translateX(0); }
+    50%  { opacity:1;   transform:translateY(-50%) translateX(2px); }
+    100% { opacity:.85; transform:translateY(-50%) translateX(0); }
+}
+
+:root{
+    --black-tile: rgba(0, 0, 0, 0.45);
+    --white-tile: rgba(255,255,255,0.08);
+    --neon: #39ff14;
+    --tile-border: rgba(57,255,20,0.18);
+}
+
+html,body{
+    margin:0;
+    height:100%;
+    overflow:hidden;
+    background:black;
+    font-family: "Share Tech Mono", monospace;
+    color:white;
+}
+
+/* Background video */
+.bg{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:0;
+    filter:brightness(.5) contrast(1.2) saturate(1.1);
+}
+
+/* Overlay */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+    z-index:1;
+}
+
+/* Binary decorative rows */
+.binary{
+    position:fixed;
+    width:100%;
+    text-align:center;
+    color:var(--neon);
+    font-size:clamp(10px,1.2vw,14px);
+    letter-spacing:3px;
+    text-shadow:0 0 8px var(--neon);
+    opacity:.85;
+    pointer-events:none;
+    z-index:5;
+}
+.binary.top1{top:18px;}
+.binary.top2{top:42px;}
+.binary.top3{top:66px;}
+.binary.bot1{bottom:66px;}
+.binary.bot2{bottom:42px;}
+.binary.bot3{bottom:18px;}
+
+/* Chessboard container */
+.board{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    display:grid;
+    grid-template-columns: repeat(3, minmax(140px, 240px));
+    grid-template-rows: repeat(3, minmax(140px, 240px));
+    gap:0;
+    z-index:10;
+    width:auto;
+    height:auto;
+}
+
+/* Each tile */
+.tile{
+    border:1px solid var(--tile-border);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px;
+    text-align:center;
+    font-size:clamp(14px,1.5vw,20px);
+    letter-spacing:1px;
+    color:var(--neon);
+    text-shadow:0 0 8px var(--neon);
+    transition:.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+/* Alternating chessboard pattern */
+.tile:nth-child(odd){
+    background:var(--black-tile);
+}
+.tile:nth-child(even){
+    background:var(--white-tile);
+}
+
+/* Hover glitch */
+.tile:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 18px var(--neon), inset 0 0 22px rgba(57,255,20,0.18);
+    border-color:var(--neon);
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background video -->
+<video class="bg" autoplay muted loop playsinline>
+    <source src="./Pic10.mp4" type="video/mp4">
+</video>
+<!-- GLOBAL NEON GLITCH NAVBAR -->
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    z-index: 999;
+    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(57,255,20,0.18);
+}
+
+.nav-item {
+    font-family: "Share Tech Mono", monospace;
+    font-size: clamp(14px, 1.2vw, 18px);
+    color: #39ff14;
+    text-decoration: none;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-shadow: 0 0 8px #39ff14;
+    transition: 0.2s ease;
+    position: relative;
+}
+
+/* glitch effect */
+.nav-item::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 2px;
+    top: 0;
+    color: #39ff14;
+    opacity: 0.4;
+    z-index: -1;
+    text-shadow: -2px 0 #ff00c8;
+    clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+    animation: glitch 1.3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-1px, 1px); }
+    40% { transform: translate(-1px, -1px); }
+    60% { transform: translate(1px, 1px); }
+    80% { transform: translate(1px, -1px); }
+    100% { transform: translate(0); }
+}
+
+.nav-item:hover {
+    color: white;
+    text-shadow: 0 0 18px #39ff14, 0 0 28px #39ff14;
+    transform: translateY(-2px);
+}
+</style>
+
+<div class="navbar">
+    <a class="nav-item" data-text="PLAY AGAIN" href="page1.html">PLAY AGAIN</a>
+    <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
+    <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
+    <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
+    <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
+    <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
+    <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
+    <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
+</div>
+
+<div class="overlay"></div>
+<!-- VERTICAL BINARY LINES -->
+<div class="binary-vert left-vert">
+    1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1
+</div>
+
+<div class="binary-vert right-vert">
+    0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>1<br>0<br>1<br>1<br>0<br>1<br>0<br>0<br>1
+</div>
+
+<!-- CHESSBOARD SKILLS GRID -->
+<div class="board">
+
+    <div class="tile">1. Offensive Security</div>
+    <div class="tile">2. Penetration Testing</div>
+    <div class="tile">3. DevSecOps</div>
+    <div class="tile">4. Secure Full-Stack Development</div>
+    <div class="tile">5. Cloud Security</div>
+    <div class="tile">6. Network Security</div>
+    <div class="tile">7. API Security</div>
+    <div class="tile">8. AI/ML for Cybersecurity</div>
+    <div class="tile">9. Systems Architecture</div>
+
+</div>
+
+</body>
+</html>

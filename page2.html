@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Khushi — System Menu</title>
+
+<style>
+:root{
+    --neon:#0d4b06;           /* darker terminal green */
+    --neon-dark:#0a3a06;       /* darker green for hover */
+    --danger:#b51212;          /* red for TRY AGAIN */
+}
+
+html,body{
+    margin:0;
+    height:100%;
+    overflow:hidden;
+    background:black;
+    font-family: "Consolas", "Courier New", monospace;
+}
+
+/* background video */
+.bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:1;
+    filter:brightness(.60) contrast(1.3);
+}
+
+/* overlay */
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0, 0, 0, 0);
+    z-index:-1;
+}
+
+/* binary rows */
+.binary-row{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    font-size:clamp(10px, 1.2vw, 16px);
+    color:var(--neon);
+    letter-spacing:3px;
+    opacity:.7;
+    text-shadow:0 0 10px var(--neon);
+    animation:binaryGlitch 3s infinite;
+    pointer-events:none;
+}
+
+.binary-top-1{ top:20px; }
+.binary-top-2{ top:50px; }
+.binary-top-3{ top:80px; }
+
+.binary-bottom-1{ bottom:80px; }
+.binary-bottom-2{ bottom:50px; }
+.binary-bottom-3{ bottom:20px; }
+
+@keyframes binaryGlitch{
+    0%{opacity:.6; transform:translateX(0);}
+    50%{opacity:1; transform:translateX(3px);}
+    100%{opacity:.6; transform:translateX(0);}
+}
+
+/* RIGHT COLUMN ONLY */
+.menu-column{
+    position:absolute;
+    top:48%;
+    right:18%;         /* moves column left so it sits on the TV screen */
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    gap:32px;
+    z-index:20;
+}
+
+/* menu items */
+.item{
+    font-size:clamp(20px, 2.3vw, 35px);
+    color:var(--neon);
+    cursor:pointer;
+    letter-spacing:2px;
+    text-shadow:0 0 14px var(--neon), 0 0 25px var(--neon);
+    transition:0.2s ease;
+}
+
+.item span{
+    animation:codeFlicker 1.6s infinite;
+}
+
+@keyframes codeFlicker{
+    0%,100%{opacity:1;}
+    40%{opacity:.75;}
+    60%{opacity:1;}
+}
+
+.item:hover{
+    color:#ffffff;
+    text-shadow:0 0 26px var(--neon), 0 0 50px var(--neon);
+    transform:translateX(6px);
+}
+
+/* TRY AGAIN special */
+.try-again{
+    color:var(--danger);
+    text-shadow:0 0 14px var(--danger), 0 0 40px var(--danger);
+    font-weight:700;
+    margin-top:20px;
+    transition:0.2s ease;
+}
+
+.try-again:hover{
+    color: #560b0b;
+    transform:translateX(6px);
+    text-shadow:0 0 25px var(--danger), 0 0 60px var(--danger);
+}
+</style>
+</head>
+
+<body>
+
+<!-- background video -->
+<video class="bg" autoplay muted loop playsinline>
+    <source src="./Pic17.mp4" type="video/mp4">
+</video>
+
+<div class="overlay"></div>
+
+<!-- binary decorations -->
+<div class="binary-row binary-top-1">101100101011001010110010110010110010110010110010110010</div>
+<div class="binary-row binary-top-2">110010010101111001011010100110100101101010010110101001</div>
+<div class="binary-row binary-top-3">010101011010100110101001101001101010011010010101101010</div>
+
+<div class="binary-row binary-bottom-1">110101101001101010011001011010010110100110101010011010</div>
+<div class="binary-row binary-bottom-2">010110010110100101101001011010010101101010010101101001</div>
+<div class="binary-row binary-bottom-3">101001101010101100101100101101001101010100110011010100</div>
+
+
+<!-- RIGHT COLUMN ONLY -->
+<div class="menu-column" style="color: #0b4706;">
+
+    <div class="item" onclick="go('about.html')">
+        <span>&gt; ABOUT_ME.open();</span>
+    </div>
+
+    <div class="item" onclick="go('skills.html')">
+        <span>&gt; SKILLS();</span>
+    </div>
+
+    <div class="item" onclick="go('achievements.html')">
+        <span>&gt; ACHIEVEMENTS++;</span>
+    </div>
+
+    <div class="item" onclick="go('experience.html')">
+        <span>&gt; EXPERIENCE.run();</span>
+    </div>
+
+    <div class="item" onclick="go('projects.html')">
+        <span>&gt; PROJECTS.exec();</span>
+    </div>
+
+    <div class="item" onclick="go('contact.html')">
+        <span>&gt; CONTACT.open();</span>
+    </div>
+
+    <!-- TRY AGAIN -->
+    <div class="item try-again" onclick="go('page1.html')">
+        <<-- TRY AGAIN -->>
+    </div>
+
+</div>
+
+<script>
+function go(url){
+    window.location.href = url;
+}
+</script>
+
+</body>
+</html>

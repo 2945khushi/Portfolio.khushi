@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Experience — KHUSHI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g: #6BFF4A;   /* A1 bright neon green */
+  --c: #31FAFF;   /* A2 electric cyan */
+  --p: #FF6BF0;   /* A3 hot neon pink */
+  --r: #FF6666;   /* A4 laser neon red */
+
+  --bg-dark: rgba(0,0,0,0.18);
+  --icon-size: 180px;     /* base size for layer frames (bigger) */
+  --gap: 56px;
+}
+
+/* base */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:#000;font-family:"Share Tech Mono", monospace;overflow:hidden;color:#fff}
+
+/* background (uses your uploaded local path) */
+.bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
+  filter:brightness(.45) contrast(1.15);
+}
+.overlay{position:fixed; inset:0; background:rgba(0,0,0,0.16); z-index:-1;}
+
+/* navbar (kept) */
+.navbar {
+  position: fixed; top: 0; left: 0; width: 100%;
+  padding: 18px 40px; display:flex; justify-content:center; gap:40px;
+  z-index: 999; backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.25); border-bottom: 1px solid rgba(57,255,20,0.18);
+}
+.nav-item { font-size: clamp(14px, 1.2vw, 18px); color: #39ff14; letter-spacing:1px; text-decoration:none; position:relative; text-shadow:0 0 8px #39ff14; }
+.nav-item::after{ content: attr(data-text); position:absolute; left:2px; top:0; color:#39ff14; opacity:.4; z-index:-1; text-shadow:-2px 0 #ff00c8; clip-path: polygon(0 0,100% 0,100% 40%,0 40%); animation: glitch 1.3s infinite linear alternate-reverse; }
+@keyframes glitch { 0%{transform:translate(0)}50%{transform:translate(-2px,-1px)}100%{transform:translate(1px,1px)} }
+
+/* main layout — bigger, fuller look */
+.container {
+  position: absolute; left:50%; top:52%; transform:translate(-50%,-50%);
+  display:flex; gap:var(--gap); align-items:center; z-index:10;
+  padding: 0 24px;
+}
+
+/* tooltip base (Uiverse-like) */
+.tooltip-container {
+  position: relative;
+  width: calc(var(--icon-size) * 1.15);
+  height: calc(var(--icon-size) * 1.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition: transform .25s ease;
+}
+
+/* floating tooltip box above */
+.tooltip {
+  position:absolute;
+  top: -170px;
+  left:50%;
+  transform:translateX(-50%) translateY(12px);
+  padding:14px 16px;
+  opacity:0; pointer-events:none;
+  transition: all .24s cubic-bezier(.2,.9,.2,1);
+  border-radius:12px;
+  min-width:260px; max-width:360px;
+  background: linear-gradient(180deg, rgba(10,10,12,0.78), rgba(10,10,12,0.62));
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow: inset 6px 6px 18px rgba(0,0,0,0.3), 8px 12px 36px rgba(0,0,0,0.5);
+  z-index:60;
+  text-align:center;
+}
+.tooltip .t-title { font-size:16px; letter-spacing:1.6px; text-transform:uppercase; color:#fff; margin-bottom:6px; }
+.tooltip .t-sub { font-size:13px; color:rgba(255,255,255,0.95) }
+
+/* show tooltip */
+.tooltip-container:hover .tooltip { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+
+/* ICON: outer layered frames ARE the shape — big and neon */
+/* Each tooltip-container will have five .layer spans stacked; we use clip-paths per shape */
+
+.icon {
+  position: relative;
+  width: calc(var(--icon-size) * 1.15);
+  height: calc(var(--icon-size) * 1.15);
+  display:block;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+/* generic layer */
+.layer {
+  position:absolute; inset:0; border-radius:10px; overflow:hidden;
+  transition: transform .45s cubic-bezier(.2,.9,.2,1), opacity .3s ease;
+  display:block;
+  pointer-events:none;
+}
+
+/* individual layer piece — fills with currentColor border and slight bg */
+.layer span {
+  position:absolute; inset:0;
+  display:block;
+  border: 3px solid currentColor;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04));
+  opacity: 0.12;
+  transition: transform .45s cubic-bezier(.2,.9,.2,1), opacity .35s;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.6), 0 0 28px currentColor;
+}
+
+/* stacked order */
+.layer span:nth-child(1){ z-index:6; }
+.layer span:nth-child(2){ z-index:5; }
+.layer span:nth-child(3){ z-index:4; }
+.layer span:nth-child(4){ z-index:3; }
+.layer span:nth-child(5){ z-index:2; }
+
+/* FACE label (A1..A4) big and centered; will fade on hover */
+.face {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  font-size:38px; font-weight:800; color:currentColor;
+  text-shadow: 0 0 24px currentColor, 0 0 48px rgba(0,0,0,0.0);
+  transition: opacity .22s ease, transform .28s ease;
+  z-index:10;
+}
+
+/* BIG replacer text inside the shape when hovered */
+.replacer {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  flex-direction:column; text-align:center; opacity:0;
+  transition: opacity .22s ease, transform .28s ease;
+  z-index:11;
+}
+.replacer .title { font-size:26px; letter-spacing:1.6px; text-transform:uppercase; color: #fff; text-shadow: 0 0 18px currentColor; }
+.replacer .sub { margin-top:8px; font-size:14px; color:rgba(255,255,255,0.95) }
+
+/* hover interactions: push layers & create staggered offsets + rotate/skew */
+.tooltip-container:hover .layer { transform: rotate(-8deg) skew(6deg); }
+.tooltip-container:hover .layer span:nth-child(1){ transform: translate(-8px,8px) scale(1.02); opacity:.25; }
+.tooltip-container:hover .layer span:nth-child(2){ transform: translate(-16px,16px) scale(1.03); opacity:.4; }
+.tooltip-container:hover .layer span:nth-child(3){ transform: translate(-24px,24px) scale(1.04); opacity:.6; }
+.tooltip-container:hover .layer span:nth-child(4){ transform: translate(-32px,32px) scale(1.05); opacity:.82; }
+.tooltip-container:hover .layer span:nth-child(5){ transform: translate(-40px,40px) scale(1.06); opacity:1; }
+
+/* fade face, reveal replacer, and slightly enlarge container */
+.tooltip-container:hover .face { opacity:0; transform: translateY(-12px); }
+.tooltip-container:hover .replacer { opacity:1; transform: translateY(-6px); }
+.tooltip-container:hover { transform: scale(1.06); }
+
+/* SHAPE CLIP PATHS — make each layer adopt the same shape */
+/* Circle: use border-radius:50% on spans to create circular frames */
+.tc-g .layer span { border-radius:50%; }
+
+/* Triangle: use clip-path polygon */
+.tc-c .layer span {
+  clip-path: polygon(50% 8%, 95% 86%, 5% 86%);
+  border-radius:6px;
+}
+
+/* Square: keep rounded rectangle */
+.tc-p .layer span { border-radius:12px; transform-origin:center; }
+
+/* Diamond: rotate square via transform on span */
+.tc-r .layer span {
+  transform-origin:center;
+  clip-path: polygon(50% 4%, 96% 50%, 50% 96%, 4% 50%);
+  border-radius:6px;
+}
+
+/* color sets — set currentColor for each container and subtle glow */
+.tc-g { color: var(--g); filter: drop-shadow(0 0 18px var(--g)); }
+.tc-c { color: var(--c); filter: drop-shadow(0 0 18px var(--c)); }
+.tc-p { color: var(--p); filter: drop-shadow(0 0 18px var(--p)); }
+.tc-r { color: var(--r); filter: drop-shadow(0 0 18px var(--r)); }
+
+/* tooltip accents per color */
+.tc-g .tooltip { box-shadow: inset 0 0 40px rgba(107,255,74,0.06), 12px 18px 48px rgba(0,0,0,0.5); border-color: rgba(107,255,74,0.12); }
+.tc-c .tooltip { box-shadow: inset 0 0 40px rgba(49,250,255,0.06), 12px 18px 48px rgba(0,0,0,0.5); border-color: rgba(49,250,255,0.12); }
+.tc-p .tooltip { box-shadow: inset 0 0 40px rgba(255,107,240,0.06), 12px 18px 48px rgba(0,0,0,0.5); border-color: rgba(255,107,240,0.12); }
+.tc-r .tooltip { box-shadow: inset 0 0 40px rgba(255,102,102,0.06), 12px 18px 48px rgba(0,0,0,0.5); border-color: rgba(255,102,102,0.12); }
+
+/* responsive smaller screens */
+@media (max-width:1100px){
+  :root{ --icon-size: 150px; --gap:34px; }
+  .face{ font-size:32px } .replacer .title{ font-size:22px }
+}
+@media (max-width:760px){
+  :root{ --icon-size: 120px; --gap:18px; }
+  .container { transform: translate(-50%,-46%) scale(.92) }
+  .tooltip { top:-140px; min-width:200px; }
+}
+</style>
+</head>
+<body>
+
+<!-- background: local path (same file you uploaded) -->
+<video class="bg" autoplay muted loop playsinline>
+    <source src="./Pic4.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<!-- navbar -->
+<div class="navbar">
+  <a class="nav-item" data-text="PLAY AGAIN" href="page1.html">PLAY AGAIN</a>
+  <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
+  <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
+  <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
+  <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
+  <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
+  <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
+  <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
+</div>
+
+<!-- icons container -->
+<div class="container">
+
+  <!-- A1: Circle-style layered glitch frame -->
+  <div class="tooltip-container tc-g" aria-label="Deloitte Red Team">
+    <div class="icon" aria-hidden="true">
+      <div class="layer"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="face">LEVEL 1</div>
+      <div class="replacer">
+        <div class="title">Deloitte Red Team Intern</div>
+        <div class="sub">Offensive security · exploit chains</div>
+      </div>
+    </div>
+    <div class="tooltip">
+      <div class="t-title">Deloitte Red Team Intern</div>
+      <div class="t-sub">Offensive security · exploit dev · lateral movement · post-exploitation</div>
+    </div>
+  </div>
+
+  <!-- A2: Triangle-style layered glitch frame -->
+  <div class="tooltip-container tc-c" aria-label="CERT-In Research">
+    <div class="icon" aria-hidden="true">
+      <div class="layer"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="face">LEVEL 2</div>
+      <div class="replacer">
+        <div class="title">CERT-In Research Intern</div>
+        <div class="sub">Threat analysis · incident triage · vulnerability disclosure</div>
+      </div>
+    </div>
+    <div class="tooltip">
+      <div class="t-title">CERT-In Research Intern</div>
+      <div class="t-sub">National threat analysis, malware behavioral study, incident triage</div>
+    </div>
+  </div>
+
+  <!-- A3: Square-style layered glitch frame -->
+  <div class="tooltip-container tc-p" aria-label="SecureTech Labs">
+    <div class="icon" aria-hidden="true">
+      <div class="layer"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="face">LEVEL 3</div>
+      <div class="replacer">
+        <div class="title">SecureTech Labs</div>
+        <div class="sub">Full-stack secure engineering · CI/CD · cloud hardening</div>
+      </div>
+    </div>
+    <div class="tooltip">
+      <div class="t-title">SecureTech Labs (Founder)</div>
+      <div class="t-sub">Designing secure platforms, RBAC, API & infra hardening</div>
+    </div>
+  </div>
+
+  <!-- A4: Diamond-style layered glitch frame -->
+  <div class="tooltip-container tc-r" aria-label="AI/ML Defense R&D">
+    <div class="icon" aria-hidden="true">
+      <div class="layer"><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="face">LEVEL 4</div>
+      <div class="replacer">
+        <div class="title">AI/ML Cyber Defense R&D</div>
+        <div class="sub">Anomaly detection POCs · behavioral ML models</div>
+      </div>
+    </div>
+    <div class="tooltip">
+      <div class="t-title">AI/ML Cyber Defense R&D</div>
+      <div class="t-sub">Behavioral detection, POCs for anomaly detection and threat flagging</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
