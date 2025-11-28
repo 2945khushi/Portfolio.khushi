@@ -254,6 +254,211 @@
         min-height: auto;
       }
     }
+
+    /* DARE TO STARE popout styling */
+    .tile.popable { overflow: visible; }
+    .dare-container {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      gap: 8px;
+    }
+
+    .dare-text {
+      font-family: "Share Tech Mono", monospace;
+      position: relative;
+      color: #ff2b6d; /* glitch red */
+      text-shadow: 0 0 16px rgba(255, 43, 109, 0.36), 0 0 36px rgba(255, 43, 109, 0.26);
+      font-weight: 800; /* make it bold */
+      -webkit-text-stroke: 0.25px rgba(0,0,0,0.2);
+      letter-spacing: 1.6px;
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: default;
+      transform: translateZ(0);
+      transition: transform 0.18s ease, text-shadow 0.18s ease, color 0.18s ease;
+      font-size: clamp(16px, 2.6vw, 28px);
+      user-select: none;
+      outline: none;
+    }
+
+    .dare-text:focus,
+    .dare-text:hover {
+      color: #8d0e38;
+      transform: translateY(-3px) scale(1.02);
+      text-shadow: 0 0 28px rgba(255, 43, 109, 0.66), 0 0 48px rgba(255, 43, 109, 0.46);
+    }
+
+    /* glitch sub-layer */
+    .dare-text::after,
+    .dare-text::before {
+      content: attr(data-text);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      top: 0;
+      clip-path: inset(0 0 0 0);
+      opacity: 0.6;
+      font-weight: 800; /* ensure pseudo layers are visually the same weight */
+      font-size: inherit; /* match size */
+    }
+    .dare-text::before { color: #810357; transform: translateX(-50%) translateY(-1px); filter: blur(1px); mix-blend-mode: screen; opacity: 0.45; }
+    .dare-text::after { color: #801235; transform: translateX(-50%) translateY(1px); mix-blend-mode: screen; opacity: 0.25; }
+
+    @keyframes glitch-small {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-1px); }
+      50% { transform: translateX(1px); }
+      75% { transform: translateX(-0.5px); }
+      100% { transform: translateX(0); }
+    }
+
+    .dare-text:hover::before,
+    .dare-text:hover::after { animation: glitch-small 0.45s infinite linear; }
+
+    /* tooltip styling */
+    .dare-tooltip {
+      position: absolute;
+      bottom: 36px;
+      font-family: "Share Tech Mono", monospace;
+      color: #fff;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,43,109,0.14);
+      padding: 6px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+      transform: translateY(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.14s ease, transform 0.14s ease;
+      z-index: 40;
+    }
+
+    .dare-text:hover + .dare-tooltip,
+    .dare-text:focus + .dare-tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* popout image styling */
+    .popout-image {
+      width: 220px;
+      max-width: 40vw;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 43, 109, 0.12);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 8px 40px rgba(255, 43, 109, 0.08);
+      position: absolute;
+      bottom: -160px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.85) translateY(20px);
+      opacity: 0;
+      z-index: 100;
+      transition: transform 0.22s cubic-bezier(.2,.8,.2,1), opacity 0.22s ease;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(0,0,0,0.15));
+      object-fit: cover;
+      display: none; /* Hide small inline popout; overlay will be used instead */
+    }
+
+    .dare-text:hover + .dare-tooltip + .popout-image,
+    .dare-text:focus + .dare-tooltip + .popout-image {
+      transform: translateX(-50%) scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* hide image gracefully if file missing */
+    .popout-image[src=""] { display: none; }
+
+    /* full-screen popout overlay */
+    .popout-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      background: rgba(0,0,0,0.45);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.22s ease, visibility 0.22s ease;
+      pointer-events: none;
+    }
+
+    .popout-overlay.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .popout-wrap {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: min(92vw, 1000px);
+      max-height: 92vh;
+      transform: scale(0.98) translateY(8px);
+      transition: transform 0.22s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .popout-overlay.visible .popout-wrap { transform: scale(1) translateY(0); }
+
+    .popout-main {
+      width: min(80vw, 920px);
+      max-height: 84vh;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 60px 140px rgba(0,0,0,0.8), 0 12px 44px rgba(255, 43, 109, 0.08);
+      border: 1px solid rgba(255, 43, 109, 0.18);
+      z-index: 10;
+      position: relative;
+      display: block;
+      transform-origin: center center;
+      background: rgba(0,0,0,0.12);
+    }
+
+    /* ghost layers for glitch effect */
+    .popout-ghost {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: min(80vw, 920px);
+      max-height: 84vh;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      border-radius: 12px;
+      z-index: 9;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.7;
+      filter: blur(0.4px) saturate(1.15);
+      transition: transform 0.12s linear;
+    }
+
+    .ghost1 { animation: ghost-float 1.05s infinite linear; filter: hue-rotate(-15deg) blur(0.6px) saturate(1.2); opacity: .55; }
+    .ghost2 { animation: ghost-float2 .9s infinite linear; filter: hue-rotate(15deg) blur(1px) saturate(1.05); opacity: .45; }
+
+    @keyframes ghost-float {
+      0% { transform: translate(-50%, -50%) translateX(0); }
+      20% { transform: translate(-50%, -50%) translateX(-8px) translateY(2px); }
+      40% { transform: translate(-50%, -50%) translateX(8px) translateY(-4px); }
+      60% { transform: translate(-50%, -50%) translateX(-6px) translateY(2px); }
+      80% { transform: translate(-50%, -50%) translateX(4px) translateY(-1px); }
+      100% { transform: translate(-50%, -50%) translateX(0); }
+    }
+
+    @keyframes ghost-float2 {
+      0% { transform: translate(-50%, -50%) translateX(0); }
+      25% { transform: translate(-50%, -50%) translateX(6px) translateY(-2px); }
+      50% { transform: translate(-50%, -50%) translateX(-6px) translateY(3px); }
+      75% { transform: translate(-50%, -50%) translateX(3px) translateY(-1px); }
+      100% { transform: translate(-50%, -50%) translateX(0); }
+    }
   </style>
 </head>
 
@@ -354,17 +559,12 @@
 
   <div class="overlay" aria-hidden="true"></div>
 
-  <!-- decorative binary -->
-  <div class="binary top">101010110010110010101001011010010110010110010110010</div>
-  <div class="binary">110010101011001010101010110110010101011001010110010</div>
-  <div class="binary">010101100101011001010110110010010101101001010101010</div>
-
 
   <div class="page" role="main" aria-label="About Khushi">
     <div class="grid" role="list">
 
       <!-- 01 PLAYER -->
-      <div class="tile" role="listitem" aria-label="Player info">
+      <div class="tile popable" role="listitem" aria-label="Player info">
         <div class="t-head">
           <div class="t-num">01.</div>
           <div class="t-title">PLAYER: KHUSHI</div>
@@ -372,6 +572,13 @@
         <div class="t-body">
           <strong>STATUS:</strong> ACTIVE · EVOLVING · UNCOMPROMISING<br>
           <strong>BACKSTORY:</strong> BUILT FROM SCRATCH. LEVELING UP BY DESIGN.
+        </div>
+        <!-- DARE TO STARE text + popout image -->
+        <div class="dare-container">
+          <span class="dare-text" tabindex="0" data-text="×̷̷͜×̷DARE TO STARE ×̷̷͜×̷" aria-describedby="dareTooltip">×̷̷͜×̷DARE TO STARE×̷̷͜×̷</span>
+          <div id="dareTooltip" class="dare-tooltip" role="tooltip">Hover to reveal</div>
+          <!-- Replace 'profile.jpg' with your actual photo file. If not available, it'll be hidden. -->
+          <img class="popout-image" src="./Pic18.jpg" alt="Khushi" />
         </div>
       </div>
 
@@ -447,10 +654,89 @@
     </div>
   </div>
 
-  <div class="binary binary-bottom1">110101101001101010011001011010010110100110101010011010</div>
-  <div class="binary binary-bottom2">010110010110100101101001011010010101101010010101101001</div>
-  <div class="binary binary-bottom3">101001101010101100101100101101001101010100110011010100</div>
+  
+
+  <!-- Fullscreen popout overlay (hidden by default) -->
+  <div class="popout-overlay" id="popout-overlay" aria-hidden="true">
+    <div class="popout-wrap" role="dialog" aria-modal="true" aria-label="Khushi image viewer">
+      <img class="popout-main" src="./Pic18.jpg" alt="Khushi">
+      <img class="popout-ghost ghost1" src="./Pic18.jpg" alt="" aria-hidden="true" />
+      <img class="popout-ghost ghost2" src="./Pic18.jpg" alt="" aria-hidden="true" />
+    </div>
+  </div>
 
 </body>
+
+<script>
+  // Full-screen overlay popout behavior (hover/focus/click)
+  (function () {
+    const dareText = document.querySelector('.dare-text');
+    const smallPreview = document.querySelector('.popout-image');
+    const tooltip = document.querySelector('.dare-tooltip');
+    const overlay = document.getElementById('popout-overlay');
+    const overlayMain = overlay && overlay.querySelector('.popout-main');
+    const overlayGhost1 = overlay && overlay.querySelector('.ghost1');
+    const overlayGhost2 = overlay && overlay.querySelector('.ghost2');
+
+    if (!dareText || !overlay || !overlayMain) return;
+
+    // Copy initial preview image src into overlay images
+    const src = (smallPreview && smallPreview.getAttribute('src')) || overlayMain.getAttribute('src');
+    overlayMain.src = src;
+    overlayGhost1 && (overlayGhost1.src = src);
+    overlayGhost2 && (overlayGhost2.src = src);
+
+    overlayMain.addEventListener('error', () => {
+      overlayMain.style.display = 'none';
+      overlayGhost1 && (overlayGhost1.style.display = 'none');
+      overlayGhost2 && (overlayGhost2.style.display = 'none');
+    });
+
+    function showOverlay() {
+      overlay.classList.add('visible');
+      overlay.removeAttribute('aria-hidden');
+      overlay.setAttribute('tabindex', '-1');
+      overlay.focus({preventScroll: true});
+      tooltip.style.opacity = '1';
+    }
+
+    function hideOverlay() {
+      overlay.classList.remove('visible');
+      overlay.setAttribute('aria-hidden', 'true');
+      tooltip.style.opacity = '0';
+    }
+
+    // Mouse enter / leave on text
+    let hideTimeout = null;
+    dareText.addEventListener('mouseenter', () => { if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; } showOverlay(); });
+    dareText.addEventListener('mouseleave', () => { if (hideTimeout) clearTimeout(hideTimeout); hideTimeout = setTimeout(() => { if (!overlay.matches(':hover')) hideOverlay(); }, 240); });
+
+    // Focus/blur for keyboard users
+    dareText.addEventListener('focus', showOverlay);
+    dareText.addEventListener('blur', hideOverlay);
+
+    // Click / tap toggles overlay on touch devices
+    let tapped = false;
+    dareText.addEventListener('click', (e) => {
+      if (e.detail === 0) return; // ignore keyboard activation
+      tapped = !tapped;
+      tapped ? showOverlay() : hideOverlay();
+    });
+
+    // Clicking the overlay background hides it
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) hideOverlay();
+    });
+
+    // Prevent overlay hide if cursor enters the overlay area (let user interact with image)
+    overlay.addEventListener('mouseenter', () => { if (hideTimeout) { clearTimeout(hideTimeout); hideTimeout = null; } });
+    overlay.addEventListener('mouseleave', () => { if (tapped) { tapped = false; hideOverlay(); } else hideOverlay(); });
+
+    // ESC to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') hideOverlay();
+    });
+  })();
+</script>
 
 </html>
