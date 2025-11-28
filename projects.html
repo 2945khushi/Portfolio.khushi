@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Projects — KHUSHI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
     html, body {
-    overflow: hidden !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
     height: 100%;
     width: 100%;
 }
@@ -19,6 +20,10 @@
   padding: 18px 40px; display:flex; justify-content:center; gap:40px;
   z-index: 999; backdrop-filter: blur(6px);
   background: rgba(0,0,0,0.25); border-bottom: 1px solid rgba(57,255,20,0.18);
+}
+@media (max-width:720px){
+  .navbar{ padding: 10px 14px }
+  .nav-item{ font-size: clamp(13px, 3.4vw, 15px); }
 }
 .nav-item { font-size: clamp(14px, 1.2vw, 18px); color: #39ff14; letter-spacing:1px; text-decoration:none; position:relative; text-shadow:0 0 8px #39ff14; }
 .nav-item::after{ content: attr(data-text); position:absolute; left:2px; top:0; color:#39ff14; opacity:.4; z-index:-1; text-shadow:-2px 0 #ff00c8; clip-path: polygon(0 0,100% 0,100% 40%,0 40%); animation: glitch 1.3s infinite linear alternate-reverse; }
@@ -50,6 +55,15 @@
     position:fixed; inset:0; width:100%; height:100%;
     object-fit:cover; z-index:0; filter:brightness(.45) contrast(1.05);
   }
+
+  @media (max-width:720px){
+    .bg{display:none}
+    .page{ padding: 72px 18px 96px }
+    .grid{ grid-template-columns: 1fr; gap:18px; width: 92% }
+    .card{ padding: 14px 16px }
+  }
+
+  img{ max-width:100%; height:auto; display:block }
   .overlay{
     position:fixed; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.45)); z-index:1;
   }

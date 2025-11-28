@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover" />
 <title>Achievements — KHUSHI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@ html,body{
   margin:0;
   background:#000;
   font-family:"Share Tech Mono", monospace;
-  overflow:hidden;
+  overflow-x:hidden; overflow-y:auto; -webkit-overflow-scrolling:touch;
 }
 
 /* BG VIDEO */
@@ -42,6 +42,15 @@ html,body{
   background:rgba(0,0,0,0.45);
   z-index:1;
 }
+
+/* Hide background video on small devices */
+@media (max-width:720px){
+  .bg{display:none}
+  .card-row{ position: relative; left:auto; top:auto; transform:none; flex-direction: column; gap:18px; width:92%; margin: 60px auto }
+  .card{ width: 92%; height:auto; margin:0 auto }
+}
+
+img{ max-width:100%; height:auto; display:block }
 
 /* TOP BINARY */
 .binary-top{

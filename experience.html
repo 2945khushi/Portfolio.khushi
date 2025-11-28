@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover" />
 <title>Experience — KHUSHI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -20,7 +20,7 @@
 
 /* base */
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;background:#000;font-family:"Share Tech Mono", monospace;overflow:hidden;color:#fff}
+html,body{height:100%;margin:0;background:#000;font-family:"Share Tech Mono", monospace;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;color:#fff}
 
 /* background (uses your uploaded local path) */
 .bg{
@@ -199,6 +199,15 @@ html,body{height:100%;margin:0;background:#000;font-family:"Share Tech Mono", mo
   .container { transform: translate(-50%,-46%) scale(.92) }
   .tooltip { top:-140px; min-width:200px; }
 }
+/* Hide bg video on small screens */
+@media (max-width:720px){
+  .bg{display:none}
+  .container { position:relative; left:auto; top:auto; transform:none; padding: 12px; flex-direction: column; gap: 18px }
+  .tooltip-container{ width: calc(var(--icon-size) * .9); height: calc(var(--icon-size) * .9) }
+  .tooltip{ min-width: 86%; left: 50%; transform: translateX(-50%); top: -110px }
+}
+
+img{ max-width:100%; height:auto; display:block }
 </style>
 </head>
 <body>
@@ -211,16 +220,15 @@ html,body{height:100%;margin:0;background:#000;font-family:"Share Tech Mono", mo
 
 <!-- navbar -->
 <div class="navbar">
-  <a class="nav-item" data-text="PLAY AGAIN" href="index.html">PLAY AGAIN</a>
-  <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
-  <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
-  <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
-  <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
-  <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
-  <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
-  <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
+    <a class="nav-item" data-text="PLAY AGAIN" href="index.html">PLAY AGAIN</a>
+    <a class="nav-item" data-text="GAMES" href="page2.html">GAMES</a>
+    <a class="nav-item" data-text="ABOUT ME" href="about.html">ABOUT ME</a>
+    <a class="nav-item" data-text="SKILLS" href="skills.html">SKILLS</a>
+    <a class="nav-item" data-text="ACHIEVEMENTS" href="achievements.html">ACHIEVEMENTS</a>
+    <a class="nav-item" data-text="EXPERIENCE" href="experience.html">EXPERIENCE</a>
+    <a class="nav-item" data-text="PROJECTS" href="projects.html">PROJECTS</a>
+    <a class="nav-item" data-text="CONTACT" href="contact.html">CONTACT</a>
 </div>
-
 <!-- icons container -->
 <div class="container">
 

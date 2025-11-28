@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>About — KHUSHI</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;600&display=swap"
     rel="stylesheet">
@@ -255,6 +255,18 @@
       }
     }
 
+    /* extra small screen tweaks */
+    @media (max-width:640px) {
+      .grid { gap: 12px; width: 96%; }
+      .tile { padding: 14px; }
+      .t-head { font-size: 14px; gap: 8px; }
+      .t-body, .t-list { font-size: 14px; }
+      .dare-text { font-size: clamp(13px, 6vw, 18px); }
+      /* overlay popout sizing for small screens */
+      .popout-overlay .popout-main { width: min(95vw, 560px); max-height: 78vh; }
+      .popout-overlay .popout-ghost { width: min(95vw, 560px); }
+    }
+
     /* DARE TO STARE popout styling */
     .tile.popable { overflow: visible; }
     .dare-container {
@@ -374,6 +386,9 @@
 
     /* hide image gracefully if file missing */
     .popout-image[src=""] { display: none; }
+
+  /* global img responsiveness */
+  img { max-width: 100%; height: auto; display: block; }
 
     /* full-screen popout overlay */
     .popout-overlay {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>CONTACTS — KHUSHI</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
@@ -97,14 +97,47 @@
   box-shadow: 0 0 25px var(--neon-1), inset 0 0 15px var(--neon-1);
 }
 
-    .navbar {
-  position: fixed; top: 0; left: 0; width: 100%;
-  padding: 18px 40px; display:flex; justify-content:center; gap:40px;
-  z-index: 999; backdrop-filter: blur(6px);
-  background: rgba(0,0,0,0.25); border-bottom: 1px solid rgba(57,255,20,0.18);
+   .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    z-index: 999;
+    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(57,255,20,0.18);
 }
-.nav-item { font-size: clamp(14px, 1.2vw, 18px); color: #39ff14; letter-spacing:1px; text-decoration:none; position:relative; text-shadow:0 0 8px #39ff14; }
-.nav-item::after{ content: attr(data-text); position:absolute; left:2px; top:0; color:#39ff14; opacity:.4; z-index:-1; text-shadow:-2px 0 #ff00c8; clip-path: polygon(0 0,100% 0,100% 40%,0 40%); animation: glitch 1.3s infinite linear alternate-reverse; }
+
+.nav-item {
+    font-family: "Share Tech Mono", monospace;
+    font-size: clamp(14px, 1.2vw, 18px);
+    color: #39ff14;
+    text-decoration: none;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-shadow: 0 0 8px #39ff14;
+    transition: 0.2s ease;
+    position: relative;
+}
+
+/* glitch effect */
+.nav-item::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 2px;
+    top: 0;
+    color: #39ff14;
+    opacity: 0.4;
+    z-index: -1;
+    text-shadow: -2px 0 #ff00c8;
+    clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+    animation: glitch 1.3s infinite linear alternate-reverse;
+}
+
   :root{
     --bg:#000;
     --neon-1:#39ff14;
@@ -117,12 +150,22 @@
     --glass-border: rgba(255,255,255,0.06);
   }
   *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:var(--bg);font-family:"Share Tech Mono", monospace;color:#fff;overflow:hidden}
+  html,body{height:100%;margin:0;background:var(--bg);font-family:"Share Tech Mono", monospace;color:#fff;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
   a{color:inherit}
   /* Background video placeholder - replace src in <video> */
   .bg{
     position:fixed; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; filter:brightness(.45) contrast(1.05);
   }
+
+  /* Hide heavy background on small devices */
+  @media (max-width:720px){
+    .bg{ display:none }
+    .contact-form-wrapper{ left:50%; right:auto; transform:translateX(-50%); bottom:20px; }
+    .form-card-neon{ width: calc(100% - 28px); padding: 1rem; }
+    .page{ padding: 28px 12px 88px }
+  }
+
+  img{ max-width:100%; height:auto; display:block }
   .overlay{position:fixed; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.45)); z-index:0; pointer-events:none;}
 
   .page {
@@ -326,7 +369,7 @@
             </div>
 
             <div class="contact">
-              <strong>+91 93159 86248</strong>
+              <strong>+91 XXXXX XXXXX</strong>
               <small>Call / WhatsApp</small>
             </div>
           </div>
@@ -334,7 +377,7 @@
 
         <!-- GITHUB -->
         <div class="container c3" style="--r:-6" role="listitem">
-            <a href="https://github.com/2945khushi/kbay" target="_blank">
+            <a href="https://github.com/2945khushi" target="_blank">
           <div class="glass" data-text="github">
             <div class="icon-wrap" aria-hidden="true">
               <!-- github svg -->
@@ -344,7 +387,7 @@
             </div>
 
             <div class="contact">
-              <strong>2945khushi/kbay</strong>
+              <strong>2945khushi</strong>
               <small></small>
             </div>
           </div>
@@ -367,7 +410,7 @@
               </svg>
             </div>
             <div class="contact">
-              <strong>www.linkedin.com/in/khushi-verma-63245b376</strong>
+              <strong>CONNECT🔗</strong>
               <small></small>
             </div>
           </div>

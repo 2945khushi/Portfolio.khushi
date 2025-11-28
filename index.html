@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Khushi — Cyber Arcade</title>
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
 /* ------------------- GLOBAL ------------------- */
@@ -14,7 +15,9 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden !important;
+  overflow-x: hidden; /* allow vertical scrolling on small devices */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
   background: #050409;
   font-family: "Inter", sans-serif;
   color: #e6f7ff;
@@ -30,10 +33,14 @@ html, body {
   --max-width: 1100px;
 }
 
+.box-sizing { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
 /* ------------------- STAGE ------------------- */
 .stage{
   position:relative;
-  height:100vh;
+  min-height:100vh; /* fallback */
+  min-height:100dvh; /* preferred on mobile dynamic viewport */
   overflow:hidden;
   display:flex;
   align-items:center;
@@ -51,6 +58,11 @@ video.bg {
   z-index:0;
   transform:scale(1.04);
   filter:contrast(1.05) saturate(1.05) blur(.3px);
+}
+
+/* Hide background video on small devices for performance and readability */
+@media (max-width:720px) {
+  video.bg { display: none; }
 }
 
 /* DARK OVERLAY */
@@ -111,9 +123,22 @@ video.bg {
   letter-spacing:0.02em;
 }
 
+@media (max-width:720px) {
+  .stage { padding: 20px 12px; }
+  .k-wrap { width: 120px; height: 120px; }
+  .k-frame { width: 90px; height: 90px; }
+  .content { padding: 12px; gap: 10px; }
+  .tagline { font-size: clamp(13px, 3.5vw, 16px); }
+  .creepy-text { font-size: clamp(14px, 6.8vw, 20px); }
+  .choices { flex-direction: column; gap: 10px; }
+  .neon-btn { min-width: 100%; width: 280px; max-width: 95%; padding: 12px 18px; }
+  .no-choice-container { font-size: 16px; padding: 12px 18px; }
+  .creepy-line { padding: 8px 12px; }
+}
+
 /* ------------------- YES/NO SECTION ------------------- */
 .selection { margin-top:18px; display:flex; flex-direction:column; gap:18px; }
-.are { text-transform:uppercase; font-size:13px; color:rgba(190,210,230,0.8); letter-spacing:0.22em; }
+.are { text-transform:uppercase; font-size:16px; color:rgba(190,210,230,0.8); letter-spacing:0.22em; }
 
 .choices {
   display:flex;
@@ -139,6 +164,7 @@ video.bg {
   font-size:16px;
   cursor:pointer;
   transition:0.18s;
+  min-height: 44px; /* touch target minimum */
 }
 
 .neon-btn:hover {
@@ -171,6 +197,9 @@ video.bg {
   transform: scale(1.05);
 }
 
+/* make images responsive */
+img { max-width: 100%; height: auto; display: block; }
+
 @keyframes glitchNo {
   0% { transform: translateX(0); }
   20% { transform: translateX(-3px); }
@@ -180,6 +209,54 @@ video.bg {
   100% { transform: translateX(0); }
 }
 .no-choice-container.glitching { animation: glitchNo .45s steps(4); }
+
+/* ------------------- CREEPY GLITCH / HACKER VIBE FOR TAGLINE ------------------- */
+.creepy-line { display:inline-block; position:relative; margin-top:8px; padding:6px 10px; border-radius:8px; background: rgba(0,0,0,0.18); backdrop-filter: blur(4px); }
+.creepy-text {
+  display:inline-block;
+  position:relative;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 800;
+    color: #ffffff; /* make primary text pure white for max contrast */
+  font-size: clamp(18px, 2.4vw, 32px);
+  letter-spacing: 0.02em;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.6), 0 0 18px rgba(155,123,255,0.24);
+  transform: translateZ(0);
+  z-index: 2;
+}
+.creepy-text::before, .creepy-text::after { content: attr(data-text); position:absolute; left:0; top:0; width:100%; pointer-events:none; overflow:hidden; }
+  .creepy-text::before { color: rgba(73, 57, 122, 0.92); transform: translateX(-4px); mix-blend-mode:screen; opacity:0.78; filter: blur(.4px) saturate(1.05); }
+  .creepy-text::after  { color: rgba(67, 68, 69, 0.96); transform: translateX(4px); mix-blend-mode:screen; opacity:0.64; filter: blur(.6px) saturate(1.02); }
+
+@keyframes glitch-slices {
+  0% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+  6% { clip-path: inset(20% 0 60% 0); transform: translateX(-8px); }
+  12% { clip-path: inset(50% 0 10% 0); transform: translateX(8px); }
+  18% { clip-path: inset(10% 0 30% 0); transform: translateX(-6px); }
+  24% { clip-path: inset(30% 0 20% 0); transform: translateX(5px); }
+  30% { clip-path: inset(5% 0 5% 0); transform: translateX(-3px); }
+  60% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+  100% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+}
+.creepy-text::before { animation: glitch-slices 2.1s infinite linear; }
+.creepy-text::after { animation: glitch-slices 1.4s infinite linear reverse; }
+
+@keyframes flicker {
+  0% { opacity: 1; }
+  3% { opacity: 0.15; }
+  6% { opacity: 1; }
+  9% { opacity: 0.6; }
+  12% { opacity: 1; }
+  100% { opacity: 1; }
+}
+  .creepy-text { animation: flicker 4.8s infinite ease-in-out; }
+
+.creepy-line::after { content: ""; position:absolute; inset:0; pointer-events:none; mix-blend-mode:multiply; opacity:0.68; background-image: repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 4px); z-index: -1; }
+  .creepy-text .cursor { display:inline-block; width:6px; height:1em; background: linear-gradient(180deg, rgba(155,123,255,0.95), rgba(246,247,255,0.85)); margin-left:8px; vertical-align:middle; animation: blink 1s steps(1) infinite; opacity:0.95; }
+@keyframes blink { 0% { opacity:1 } 50% { opacity:0 } 100% { opacity:1 } }
+.creepy-text:hover::before { transform: translateX(-12px) scale(1.02); opacity:1; }
+.creepy-text:hover::after  { transform: translateX(12px) scale(1.02); opacity:0.95; }
+
 
 </style>
 </head>
@@ -215,11 +292,15 @@ video.bg {
       </div>
     </div>
 
-    <div class="tagline">Hello, I'm Khushi — welcome to my arcade.</div>
+    <div class="tagline">WELCOME TO THE K-VERSE<br><br>
+      <span class="creepy-line">
+        <span class="creepy-text" data-text="A strange game...the only winning move is not to play">A strange game...the only winning move is not to play<span class="cursor" aria-hidden="true"></span></span>
+      </span>
+    </div>
 
     <!-- YES / NO AREA -->
     <div class="selection">
-      <div class="are">DO YOU WANT TO CONTINUE?</div>
+      <div class="are">so--->>>would you like to?</div>
 
       <div class="choices" id="choiceButtons">
 

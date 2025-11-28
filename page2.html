@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1,viewport-fit=cover">
 <title>Khushi — System Menu</title>
 
 <style>
@@ -15,11 +15,15 @@
 html,body{
     margin:0;
     height:100%;
-    overflow:hidden;
+    overflow-x: hidden; /* allow vertical scroll on mobile */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background:black;
     font-family: "Consolas", "Courier New", monospace;
 }
 
+.box-sizing{box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
 /* background video */
 .bg{
     position:absolute;
@@ -29,6 +33,13 @@ html,body{
     object-fit:cover;
     z-index:1;
     filter:brightness(.60) contrast(1.3);
+}
+
+/* Hide background video on small screens */
+@media (max-width:720px){
+    .bg{display:none}
+    .menu-column{position:static; transform:none; right:auto; left:auto; top:auto; margin: 20px auto; justify-content:center; align-items:center;}
+    .item{ font-size: clamp(16px, 5vw, 28px); text-align:center }
 }
 
 /* overlay */
